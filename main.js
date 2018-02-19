@@ -1,8 +1,8 @@
 /*************************************
- *       
+ *
  *          This is the initial commit with boilerplate from: https://github.com/electron/electron-quick-start
  *          to set up the needed files to begin development
- * 
+ *
  ************************************/
 
 
@@ -12,8 +12,18 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-const path = require('path')
-const url = require('url')
+const path = require('path');
+const url = require('url');
+const fs = require('fs');
+
+// reading in data
+fs.readFile('csvdummy.csv', function (err, data){
+  if(err) {
+    return console.error(err);
+  }
+  console.log("Async read: " + data.toString());
+});
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -30,8 +40,8 @@ function createWindow () {
     slashes: true
   }))
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+//  Open the DevTools.
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
