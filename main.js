@@ -6,15 +6,18 @@
  ************************************/
 
 
-const electron = require('electron')
+const electron = require('electron');
 // Module to control application life.
-const app = electron.app
+const app = electron.app;
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
+var csvjson = require('csvjson'); // Package to convert csv to json for easier editing of data
+var csvData = fs.readFileSync(path.join(__dirname, 'StudentTest.csv'), { encoding : 'utf8'}); // Read in csv file
+
 
 // reading in data
 fs.readFile('csvdummy.csv', function (err, data){
@@ -33,7 +36,7 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600})
 
-  // and load the index.html of the app.
+  // and load the main html page of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'pages/assign.html'),
     protocol: 'file:',
@@ -74,7 +77,12 @@ app.on('activate', function () {
   }
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
 
+//--------------------------------- Convert csv to JSON ------------------------------
+var csvOptions = {
+  delimiter : ',', // optional
+  quote : '"' // optional
+};
 
+var jsonData = csvjson.toColumnArray(csvData, csvOptions);
+console.log(jsonData);
