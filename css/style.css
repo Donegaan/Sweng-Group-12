@@ -1,0 +1,47 @@
+body {
+   font-family: 'Open Sans', sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #282828;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+h2{
+    padding-left: 10px;
+}
+.sidenav a {
+    padding: 20px 20px 20px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #888;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: white;
+   
+}
+.sidenav a.active{
+     background-color:  #999999;
+    color: white;
+}
+.sidenav a:hover:not(.active) {
+     color: white;
+
+}
+
+.main {
+    margin-left: 200px; /* Same as the width of the sidenav */
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
