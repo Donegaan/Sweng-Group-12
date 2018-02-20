@@ -21,7 +21,7 @@ fs.readFile('csvdummy.csv', function (err, data){
   if(err) {
     return console.error(err);
   }
-  console.log("Async read: " + data.toString());
+  //console.log("Async read: " + data.toString());
 });
 
 
@@ -35,13 +35,13 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'assign.html'),
+    pathname: path.join(__dirname, 'pages/assign.html'),
     protocol: 'file:',
     slashes: true
   }))
 
 //  Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -76,3 +76,5 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
