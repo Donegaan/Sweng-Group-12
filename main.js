@@ -1,9 +1,6 @@
-/*************************************
- *
- *          This is the initial commit with boilerplate from: https://github.com/electron/electron-quick-start
- *          to set up the needed files to begin development
- *
- ************************************/
+/*--------------------------
+        Boilerplate from: https://github.com/electron/electron-quick-start
+ -------------------------*/
 
 
 const electron = require('electron');
@@ -16,16 +13,7 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 var csvjson = require('csvjson'); // Package to convert csv to json for easier editing of data
-var csvData = fs.readFileSync(path.join(__dirname, 'StudentTest.csv'), { encoding : 'utf8'}); // Read in csv file
-
-
-// reading in data
-fs.readFile('csvdummy.csv', function (err, data){
-  if(err) {
-    return console.error(err);
-  }
-  //console.log("Async read: " + data.toString());
-});
+var csvData = fs.readFileSync(path.join(__dirname, 'Students.csv'), { encoding : 'utf8'}); // Read in csv file
 
 
 // Keep a global reference of the window object, if you don't, the window will
