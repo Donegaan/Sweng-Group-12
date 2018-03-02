@@ -14,7 +14,7 @@ const url = require('url');
 const fs = require('fs');
 var csvjson = require('csvjson'); // Package to convert csv to json for easier editing of data
 var csvData = fs.readFileSync(path.join(__dirname, 'Students.csv'), { encoding : 'utf8'}); // Read in csv file
-
+var jsonfile = require('jsonfile');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -72,5 +72,60 @@ var csvOptions = {
   quote : '"' // optional
 };
 
-var jsonData = csvjson.toColumnArray(csvData, csvOptions);
+//var jsonData = csvjson.toColumnArray(csvData, csvOptions);
+//console.log(jsonData);
+
+//-------------------------Write to JSON ---------------------------------------
+var jsonData = csvjson.toObject(csvData,csvOptions);
+
+//Testing the add and edit functions
+jsonData = addStudent(jsonData, "00000", "Test Name", "D1", "000");
+jsonData = editStudent(jsonData, "00000", "John Doe", "D3","111");
+
+jsonfile.writeFile('jsonData.json',jsonData, function(err){
+  if(err)
+    console.error(err)});
+
 console.log(jsonData);
+/*
+    Adds a new student to the JSON object
+    @param jsonData -the json object array that is being appended
+    @param number -
+    @param name -
+    @param location -
+    @param currentPlacement -
+    @return -returns the appended object array
+*/
+function addStudent(jsonData, number, name, location, currentPlacement){
+
+  var newStudentInfo = {"Number": number,
+                        "Name": name,
+                        "Location": location,
+                        "Current Placement": currentPlacement};
+
+  jsonData.push(newStudentInfo);
+  return jsonData;
+}
+/*
+  Edits a students details based and searches based on student number
+  @param jsonData -the json object array that is being edited
+  @param number - the number of the student who you want to edit
+  @param name -
+  @param location -
+  @param currentPlacment -
+  @return -returns the edited object array
+*/
+function editStudent(jsonData, number, name, location, currentPlacement) {
+
+  for (var i=0; i<jsonData.length; i++){
+    if(jsonData[i].Number == number){
+      jsonData[i].Name = name;
+      jsonData[i].Location = location;
+      jsonData[i]["Current Placement"] = currentPlacement
+    }
+    else if(i==jsonData.length-1)
+      console.log("Student doesn't exist");
+  }
+
+  return jsonData;
+}

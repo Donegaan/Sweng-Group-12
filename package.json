@@ -20,6 +20,7 @@
     "electron": "1.7.12"
   },
   "dependencies": {
-    "csvjson": "^5.0.0"
+    "csvjson": "^5.0.0",
+    "jsonfile": "^4.0.0"
   }
 }
