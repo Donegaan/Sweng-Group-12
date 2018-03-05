@@ -14,6 +14,7 @@ const url = require('url');
 const fs = require('fs');
 var csvjson = require('csvjson'); // Package to convert csv to json for easier editing of data
 var csvData = fs.readFileSync(path.join(__dirname, 'Students.csv'), { encoding : 'utf8'}); // Read in csv file
+var csvPlacement = fs.readFileSync(path.join(__dirname, 'Placements.csv'),{ encoding : 'utf8'});
 var jsonfile = require('jsonfile');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -76,25 +77,67 @@ var csvOptions = {
 //console.log(jsonData);
 
 //-------------------------Write to JSON ---------------------------------------
-var jsonData = csvjson.toObject(csvData,csvOptions);
+var studentJson = csvjson.toObject(csvData,csvOptions);
+var placementJson = csvjson.toObject(csvPlacement, csvOptions);
 
-//Testing the add and edit functions
-jsonData = addStudent(jsonData, "00000", "Test Name", "D1", "000");
-jsonData = editStudent(jsonData, "00000", "John Doe", "D3","111");
+//Testing the add, edit and remove functions
+studentJson = addStudent(studentJson, "00000", "Test Name", "D1", "000");
+studentJson = editStudent(studentJson, "00000", "John Doe", "D3","111");
+//studentJson = removeStudent(studentJson,"00000")
 
-jsonfile.writeFile('jsonData.json',jsonData, function(err){
+placementJson = addPlacement(placementJson, "191","D1","1");
+placementJson = editPlacement(placementJson,"191","D3","3");
+//placementJson = removePlacement(placementJson,"191");
+
+jsonfile.writeFile('studentJson.json',studentJson, function(err){
   if(err)
     console.error(err)});
 
-console.log(jsonData);
+console.log(studentJson);
+
+jsonfile.writeFile('placementJson.json',placementJson, function(err){
+  if(err)
+  console.error(err)});
+
+console.log(placementJson);
+
+//Adds a new placement to the list
+function addPlacement(placementJson, id, location, numPlacements){
+
+  var newPlacementInfo = {"ID" : id,
+                          "Location" : location,
+                          "Number of Placements" : numPlacements};
+
+  placementJson.push(newPlacementInfo);
+  return placementJson;
+}
+//Searches for placement by ID and edits according to new parameters
+function editPlacement(placementJson, id, location, numPlacements){
+
+  for (var i=0; i<placementJson.length; i++){
+    if(placementJson[i].ID ==id){
+      placementJson[i].Location = location;
+      placementJson[i]["Number of Placements"] = numPlacements;
+    }
+    else if(i==placementJson.length-1)
+      console.log("Placement doesnt exist");
+  }
+  return placementJson;
+}
+//Removes a placement based on ID
+function removePlacement(placementJson, id){
+
+  for (var i=0; i<placementJson.length;i++){
+    if(placementJson[i].ID == id){
+      placementJson.splice(i,1);
+    }
+  }
+  return placementJson;
+
+
+}
 /*
     Adds a new student to the JSON object
-    @param jsonData -the json object array that is being appended
-    @param number -
-    @param name -
-    @param location -
-    @param currentPlacement -
-    @return -returns the appended object array
 */
 function addStudent(jsonData, number, name, location, currentPlacement){
 
@@ -108,12 +151,6 @@ function addStudent(jsonData, number, name, location, currentPlacement){
 }
 /*
   Edits a students details based and searches based on student number
-  @param jsonData -the json object array that is being edited
-  @param number - the number of the student who you want to edit
-  @param name -
-  @param location -
-  @param currentPlacment -
-  @return -returns the edited object array
 */
 function editStudent(jsonData, number, name, location, currentPlacement) {
 
@@ -126,9 +163,21 @@ function editStudent(jsonData, number, name, location, currentPlacement) {
     else if(i==jsonData.length-1)
       console.log("Student doesn't exist");
   }
-
   return jsonData;
 }
+/*
+  Removes a student from the list based on their student number.
+*/
+function removeStudent(jsonData, number){
+
+  for (var i=0; i<jsonData.length;i++){
+    if(jsonData[i].Number == number){
+      jsonData.splice(i,1);
+    }
+  }
+  return jsonData
+}
+
 
 fs.readFile('students.csv', function (err, data){
   if(err) {
@@ -141,7 +190,7 @@ fs.readFile('students.csv', function (err, data){
   var studentNumber = [];
   var studentLocation = [];
   var studentPlacement = [];
- 
+
   //separate into array with student number
   for( i=4; i<=fields.length;)
   {
@@ -162,7 +211,7 @@ fs.readFile('students.csv', function (err, data){
       studentLocation.push(fields[i])
       i = i+4;
     }
-    
+
     // separate into array with student current placement
     for( i=7; i<=fields.length;)
     {
