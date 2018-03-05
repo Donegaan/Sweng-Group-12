@@ -129,3 +129,120 @@ function editStudent(jsonData, number, name, location, currentPlacement) {
 
   return jsonData;
 }
+
+fs.readFile('students.csv', function (err, data){
+  if(err) {
+    return console.error(err);
+  }
+  //various array declarations
+  var input = data + '';
+  var fields = input.split(/[\n,]+/);
+  var studentName = [];
+  var studentNumber = [];
+  var studentLocation = [];
+  var studentPlacement = [];
+ 
+  //separate into array with student number
+  for( i=4; i<=fields.length;)
+  {
+    studentNumber.push(fields[i])
+    i = i+4;
+  }
+
+  // separate into array with student names
+  for( i=5; i<=fields.length;)
+  {
+    studentName.push(fields[i])
+    i = i+4;
+  }
+
+    // separate into array with student location
+    for( i=6; i<=fields.length;)
+    {
+      studentLocation.push(fields[i])
+      i = i+4;
+    }
+    
+    // separate into array with student current placement
+    for( i=7; i<=fields.length;)
+    {
+      studentPlacement.push(fields[i])
+      i = i+4;
+    }
+});
+
+// reading in data from Previous Placements file
+fs.readFile('Previous Placements.csv', function (err, data){
+  if(err) {
+    return console.error(err);
+  }
+
+  //various array declarations
+  var input = data + '';
+  var fields = input.split(/[\n,]+/);
+  var studentNumber = [];
+  var placementOne = [];
+  var placementTwo = [];
+  var placementThree = [];
+
+  //separate into array with placem
+  for( i=4; i<=fields.length;)
+  {
+    studentNumber.push(fields[i])
+    i = i+4;
+  }
+
+  //separate into array with placementOne locations
+  for( i=5; i<=fields.length;)
+  {
+    placementOne.push(fields[i])
+    i = i+4;
+  }
+
+  // separate into array with placementTwo location
+  for( i=6; i<=fields.length;)
+  {
+    placementTwo.push(fields[i])
+    i = i+4;
+  }
+
+  // separate into array with placementThree location
+  for( i=7; i<=fields.length;)
+  {
+    placementThree.push(fields[i])
+    i = i+4;
+  }
+
+ });
+
+function displayStudents()
+{
+ for(i =0; i<studentPlacement.length; i++)
+ {
+ console.log( "Name: " + studentName[i].toString() + ". " );
+ console.log( "Location " + studentLocation[i].toString() + "." );
+ console.log( "Current Placement " + studentPlacement[i].toString() + "\n" );
+ console.log( "ID " + studentNumber[i].toString() + "\n" );
+ }
+}
+
+function displayLocations()
+{
+  for(i =0; i<10; i++)
+  {
+  console.log( "Number: " + placementID[i].toString() + ". " );
+  console.log( "Location: " + placementLocation[i].toString() + ". " );
+  console.log( "Number of places: " + placementID[i].toString() + "\n " )
+  }
+}
+
+function displayPastPlacement()
+{
+  for(i=0; i<5; i++)
+  {
+   console.log( "ID: " + studentNumber[i].toString() + ". " );
+   console.log( "PlacementOne: " + placementOne[i].toString() + ". " );
+   console.log( "PlacementTwo: " + placementTwo[i].toString() + ". " );
+   console.log( "PlacementThree: " + placementThree[i].toString() + "\n" );
+  }
+}
