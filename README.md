@@ -6,8 +6,7 @@ npm install
 # Run the app
 npm start
 
-# Csv to JSON package documentation:
-https://www.npmjs.com/package/csvjson
+# Documentation:
+Csv to JSON: https://www.npmjs.com/package/csvjson
 
-#Read and write to json package documentation
-https://www.npmjs.com/package/jsonfile
+Read and write to json package: https://www.npmjs.com/package/jsonfile
