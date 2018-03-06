@@ -1,26 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Workplace List</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"  href="css/style.css">
-<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <title>Workplace List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"  href="css/style.css">
+     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+     <script src="node_modules/jquery/dist/jquery.min.js"></script>
+     <script src="PapaParse-4.3.2/papaparse.min.js"></script>
+     <script>if (window.module) module = window.module;</script>
 </head>
 <body>
 
-<div class="sidenav">
-  <a href="assign.html" >Assign</a>
-  <a href="studentlist.html">Student List</a>
-  <a href="workplacelist.html" class ="active">Workplace List</a>
-  <a href="editstudent.html">Edit Student</a>
-  <a href="editworkplace.html">Edit Workplace</a>
+    <div class="sidenav">
+        <a href="assign.html" >Assign</a>
+        <a href="studentlist.html">Student List</a>
+        <a href="workplacelist.html" class ="active">Workplace List</a>
+    </div>
 
-</div>
+    <div class="main">
+        <h2>Workplace List</h2>
 
-<div class="main">
-  <h2>Workplace List</h2>
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="files">Upload the Workplace List .csv file:</label>
+                <input type="file" id="files"  class="form-control" accept=".csv" required />
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submit-file" class="btn btn-primary">Upload File</button>
+            </div>
+        </form>
 
-</div>
-     
+        <div class="row" id="parsed_csv_list">
+
+        </div>
+    </div>
 </body>
-</html> 
+    
+<script type="text/javascript">
+    
+$('#submit-file').on("click",function(e){
+	e.preventDefault();
+	$('#files').parse({
+		config: {
+			delimiter: "auto",
+			complete: displayHTMLTable,
+		},
+		before: function(file, inputElem)
+		{
+			console.log("Parsing file...", file);
+		},
+		error: function(err, file)
+		{
+			console.log("ERROR:", err, file);
+		},
+		complete: function()
+		{
+			console.log("Done with all files");
+		}
+	});
+});
+
+function displayHTMLTable(results)
+{
+    var table = "<table class='table'>";
+    var data = results.data;
+    console.log("display");
+    
+    for(i=0;i<data.length;i++)
+    {
+        table+= "<tr>";
+        var row = data[i];
+        var cells = row.join(",").split(",");
+
+        for(j=0;j<cells.length;j++)
+        {
+            table+= "<td>";
+            table+= cells[j];
+            table+= "</th>";
+        }
+
+        table+= "</tr>";
+    }
+    
+    table+= "</table>";
+    $("#parsed_csv_list").html(table);
+    console.log("displayedfinished");
+}
+    
+</script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   

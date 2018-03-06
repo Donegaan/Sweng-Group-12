@@ -13,9 +13,12 @@ body {
     overflow-x: hidden;
     padding-top: 20px;
 }
-h2{
+
+h2, form{
     padding-left: 10px;
+    padding-top: 20px;
 }
+
 .sidenav a {
     padding: 20px 20px 20px 20px;
     text-decoration: none;
@@ -28,10 +31,12 @@ h2{
     color: white;
    
 }
+
 .sidenav a.active{
      background-color:  #999999;
     color: white;
 }
+
 .sidenav a:hover:not(.active) {
      color: white;
 
@@ -41,7 +46,36 @@ h2{
     margin-left: 200px; /* Same as the width of the sidenav */
 }
 
+#parsed_csv_list{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+#parsed_csv_list td, #parsed_csv_list th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#parsed_csv_list tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+#parsed_csv_list tr:hover {background-color: #ddd;}
+
+#parsed_csv_list th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
+
+
+
