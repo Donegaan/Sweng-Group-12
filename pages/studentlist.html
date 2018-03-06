@@ -3,14 +3,16 @@
 <html lang="en">
      
 <head>
-     <link rel="stylesheet"  href="css/style.css">
      <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-     <script src="node_modules/jquery/dist/jquery.min.js"></script>
-     <script src="PapaParse-4.3.2/papaparse.min.js"></script>
+     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+     <script src="../PapaParse-4.3.2/papaparse.min.js"></script>
      <script>if (window.module) module = window.module;</script>
+     <link rel="stylesheet"  href="../css/style.css">
 
      <link rel="stylesheet" type="text/css"  href="//fonts.googleapis.com/css?family=Open+Sans" />
      <title>Student List</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans" />
 </head>
      
      
@@ -52,7 +54,7 @@ $('#submit-file').on("click",function(e){
 		},
 		before: function(file, inputElem)
 		{
-			console.log("Parsing file...", file);
+			//console.log("Parsing file...", file);
 		},
 		error: function(err, file)
 		{
@@ -60,7 +62,7 @@ $('#submit-file').on("click",function(e){
 		},
 		complete: function()
 		{
-			console.log("Done with all files");
+			//console.log("Done with all files");
 		}
 	});
 });
@@ -69,7 +71,7 @@ function displayHTMLTable(results)
 {
     var table = "<table class='table'>";
     var data = results.data;
-    console.log("display");
+    //console.log("display");
     
     for(i=0;i<data.length;i++)
     {
@@ -89,6 +91,6 @@ function displayHTMLTable(results)
     
     table+= "</table>";
     $("#parsed_csv_list").html(table);
-    console.log("displayedfinished");
+    //console.log("displayedfinished");
 }
 </script>
