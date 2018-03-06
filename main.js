@@ -178,7 +178,7 @@ function removeStudent(jsonData, number){
   return jsonData
 }
 
-
+// reading in data from students file
 fs.readFile('students.csv', function (err, data){
   if(err) {
     return console.error(err);
@@ -190,7 +190,7 @@ fs.readFile('students.csv', function (err, data){
   var studentNumber = [];
   var studentLocation = [];
   var studentPlacement = [];
-
+ 
   //separate into array with student number
   for( i=4; i<=fields.length;)
   {
@@ -211,13 +211,14 @@ fs.readFile('students.csv', function (err, data){
       studentLocation.push(fields[i])
       i = i+4;
     }
-
+    
     // separate into array with student current placement
     for( i=7; i<=fields.length;)
     {
       studentPlacement.push(fields[i])
       i = i+4;
     }
+    //displayStudents(studentName, studentLocation, studentPlacement, studentNumber);
 });
 
 // reading in data from Previous Placements file
@@ -261,12 +262,50 @@ fs.readFile('Previous Placements.csv', function (err, data){
     placementThree.push(fields[i])
     i = i+4;
   }
-
+  //displayPastPlacement(studentNumber, placementOne, placementTwo, placementThree);
  });
 
-function displayStudents()
+// reading in data from Placements file
+fs.readFile('Placements.csv', function (err, data){
+  if(err) {
+    return console.error(err);
+  }
+  
+  //various array declarations
+  var input = data + '';
+  var fields = input.split(/[\n,]+/);
+  var placementIds = [];
+  var placementLocations = [];
+  var numberOfPlacements = [];
+  
+  //separate into array with iDs
+  for( i=3; i<=fields.length;)
+  {
+    placementIds.push(fields[i])
+    i = i+3;
+  }
+  
+  //separate into array with locations
+  for( i=4; i<=fields.length;)
+  {
+    placementLocations.push(fields[i])
+    i = i+3;
+  }
+  
+  // separate into array with number of placements
+  for( i=5; i<=fields.length;)
+  {
+    numberOfPlacements.push(fields[i])
+    i = i+3;
+  }
+
+  //displayPlacementLocations(placementIds, placementLocations, numberOfPlacements);
+
+  });
+
+function displayStudents(studentName, studentLocation, studentPlacement, studentNumber)
 {
- for(i =0; i<studentPlacement.length; i++)
+ for(i =0; i<studentPlacement.length -1; i++)
  {
  console.log( "Name: " + studentName[i].toString() + ". " );
  console.log( "Location " + studentLocation[i].toString() + "." );
@@ -275,19 +314,19 @@ function displayStudents()
  }
 }
 
-function displayLocations()
+function displayPlacementLocations(placementIds, placementLocations, numberOfPlacements)
 {
-  for(i =0; i<10; i++)
+  for(i =0; i<placementIds.length -1; i++)
   {
-  console.log( "Number: " + placementID[i].toString() + ". " );
-  console.log( "Location: " + placementLocation[i].toString() + ". " );
-  console.log( "Number of places: " + placementID[i].toString() + "\n " )
+  console.log( "Number: " + placementIds[i].toString() + ". " );
+  console.log( "Location: " + placementLocations[i].toString() + ". " );
+  console.log( "Number of places: " + numberOfPlacements[i].toString() + "\n " )
   }
 }
 
-function displayPastPlacement()
+function displayPastPlacement(studentNumber, placementOne, placementTwo, placementThree)
 {
-  for(i=0; i<5; i++)
+  for(i=0; i<studentNumber.length -1; i++)
   {
    console.log( "ID: " + studentNumber[i].toString() + ". " );
    console.log( "PlacementOne: " + placementOne[i].toString() + ". " );
