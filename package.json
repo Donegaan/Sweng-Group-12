@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "csvjson": "^5.0.0",
-    "jsonfile": "^4.0.0"
+    "jsonfile": "^4.0.0",
+    "npm": "^5.7.1"
   }
 }
