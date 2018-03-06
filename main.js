@@ -186,39 +186,55 @@ fs.readFile('students.csv', function (err, data){
   //various array declarations
   var input = data + '';
   var fields = input.split(/[\n,]+/);
-  var studentName = [];
   var studentNumber = [];
-  var studentLocation = [];
+  var studentName = [];
+  var studentYear = [];
   var studentPlacement = [];
+  var studentLocation = [];
+  var studentCounties = [];
  
   //separate into array with student number
-  for( i=4; i<=fields.length;)
+  for( i=6; i<=fields.length;)
   {
     studentNumber.push(fields[i])
-    i = i+4;
+    i = i+6;
   }
 
   // separate into array with student names
-  for( i=5; i<=fields.length;)
+  for( i=7; i<=fields.length;)
   {
     studentName.push(fields[i])
-    i = i+4;
+    i = i+6;
   }
-
-    // separate into array with student location
-    for( i=6; i<=fields.length;)
+    // separate into array with student year
+    for( i=8; i<=fields.length;)
     {
-      studentLocation.push(fields[i])
-      i = i+4;
+      studentYear.push(fields[i])
+      i = i+6;
     }
     
     // separate into array with student current placement
-    for( i=7; i<=fields.length;)
+    for( i=9; i<=fields.length;)
     {
       studentPlacement.push(fields[i])
-      i = i+4;
+      i = i+6;
     }
-    //displayStudents(studentName, studentLocation, studentPlacement, studentNumber);
+
+    // separate into array with student location
+    for( i=10; i<=fields.length;)
+    {
+      studentLocation.push(fields[i])
+      i = i+6;
+    }
+
+    // separate into array with student counties
+    for( i=11; i<=fields.length;)
+    {
+      studentCounties.push(fields[i])
+      i = i+6;
+    }
+    
+  //displayStudents(studentName, studentLocation, studentPlacement, studentNumber,studentYear, studentCounties);
 });
 
 // reading in data from Previous Placements file
@@ -262,6 +278,7 @@ fs.readFile('Previous Placements.csv', function (err, data){
     placementThree.push(fields[i])
     i = i+4;
   }
+  
   //displayPastPlacement(studentNumber, placementOne, placementTwo, placementThree);
  });
 
@@ -277,50 +294,62 @@ fs.readFile('Placements.csv', function (err, data){
   var placementIds = [];
   var placementLocations = [];
   var numberOfPlacements = [];
+  var placementCounty = [];
   
   //separate into array with iDs
-  for( i=3; i<=fields.length;)
-  {
-    placementIds.push(fields[i])
-    i = i+3;
-  }
-  
-  //separate into array with locations
   for( i=4; i<=fields.length;)
   {
-    placementLocations.push(fields[i])
-    i = i+3;
+    placementIds.push(fields[i])
+    i = i+4;
   }
   
   // separate into array with number of placements
   for( i=5; i<=fields.length;)
   {
     numberOfPlacements.push(fields[i])
-    i = i+3;
+    i = i+4;
+  }
+  
+  //separate into array with locations
+  for( i=6; i<=fields.length;)
+  {
+    placementLocations.push(fields[i])
+    i = i+4;
   }
 
-  //displayPlacementLocations(placementIds, placementLocations, numberOfPlacements);
+  // separate into array with county
+  for( i=7; i<=fields.length;)
+  {
+    placementCounty.push(fields[i])
+    i = i+4;
+  }
+  
+  //displayPlacementLocations(placementIds, placementLocations, numberOfPlacements, placementCounty);
 
   });
 
-function displayStudents(studentName, studentLocation, studentPlacement, studentNumber)
+function displayStudents(studentName, studentLocation, studentPlacement, studentNumber,studentYear, studentCounties)
 {
- for(i =0; i<studentPlacement.length -1; i++)
+ for(i =0; i<studentPlacement.length; i++)
  {
+ console.log( "Number " + studentNumber[i].toString() + "." );
  console.log( "Name: " + studentName[i].toString() + ". " );
  console.log( "Location " + studentLocation[i].toString() + "." );
- console.log( "Current Placement " + studentPlacement[i].toString() + "\n" );
- console.log( "ID " + studentNumber[i].toString() + "\n" );
+ console.log( "Current Placement " + studentPlacement[i].toString() + "." );
+ console.log( "Student Year " + studentYear[i].toString() + "." );
+ console.log( "Student County " + studentCounties[i].toString() + "\n" );
  }
 }
 
-function displayPlacementLocations(placementIds, placementLocations, numberOfPlacements)
+function displayPlacementLocations(placementIds, placementLocations, numberOfPlacements, placementCounty)
 {
   for(i =0; i<placementIds.length -1; i++)
   {
-  console.log( "Number: " + placementIds[i].toString() + ". " );
+  console.log( "ID of Placement: " + placementIds[i].toString() + ". " );
+  console.log( "Number of places: " + numberOfPlacements[i].toString() + "." );
   console.log( "Location: " + placementLocations[i].toString() + ". " );
-  console.log( "Number of places: " + numberOfPlacements[i].toString() + "\n " )
+  console.log( "County: " + placementCounty[i].toString() + "\n" );
+
   }
 }
 
