@@ -9,4 +9,6 @@ npm start
 # Documentation:
 Csv to JSON: https://www.npmjs.com/package/csvjson
 
+Json to CSv https://www.npmjs.com/package/convert-json-to-csv
+
 Read and write to json package: https://www.npmjs.com/package/jsonfile
