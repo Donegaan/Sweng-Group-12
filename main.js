@@ -107,9 +107,21 @@ var columnHeaderArray=["Number","Name","Year", "Current Placement", "Location","
 csvData = jsonToCsv.convertArrayOfObjects(studentJson, columnHeaderArray);
 csvData = csvData.replace(/"/g, '');
 fs.writeFile('Students.csv',csvData,'utf8', null);
+
+
+var columnHeaderArray=["ID","Number of Placements","Location","County"];
+csvPlacement = jsonToCsv.convertArrayOfObjects(placementJson, columnHeaderArray);
+csvPlacement = csvPlacement.replace(/"/g, '');
+fs.writeFile('Placements.csv',csvPlacement, 'utf8', null);
 //Adds a new placement to the list
 function addPlacement(placementJson, id, location, county, numPlacements){
 
+  for(var i=0; i<placementJson.length; i++){
+    if(placementJson[i].ID ==id){
+      return placementJson;
+    }
+
+  }
   var newPlacementInfo = {"ID" : id,
                           "Location" : location,
                           "County" : county,
