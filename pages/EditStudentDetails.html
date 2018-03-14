@@ -12,25 +12,33 @@
     <a href="assign.html">Assign</a>
     <a href="studentlist.html">Student List</a>
     <a href="workplacelist.html">Workplace List</a>
+    <a href="EditStudentDetails.html">edit</a>
 
 </div>
 
 <div class="main">
   <h2>Edit Student Details</h2>
 <div class="container">
-  <form action="saved.html">
+  <form action="saved.html" onsubmit="go()">
     <label for="id">Student Number</label>
     <input type="text" id="id" name="id" value="12345">
     <label for="name">Full Name</label>
     <input type="text" id="name" name="name" value="Sarah Jones">
+    <label for="year">Year</label>
+    <input type="text" id="year" name="year" value="3">
     <label for="location">Location</label>
     <input type="text" id="location" name="location"value="D1">
-      <label for="places">Current Placement ID</label>
-    <input type="text" id="currPlace" name="currPlace" value="90"> 
+    <label for="county">County</label>
+    <input type="text" id="county" name="county" value="Dublin">
+    <label for="places">Current Placement ID</label>
+    <input type="text" id="currPlace" name="currPlace" value="90">
     <input type="submit" value="Save">
   </form>
-</div>    
+  <script type ="text/javascript" src="../main.js">
+    function go(){ editStudent();}
+  </script>
 </div>
-     
+</div>
+
 </body>
-</html> 
+</html>

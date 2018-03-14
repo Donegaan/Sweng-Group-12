@@ -18,20 +18,23 @@
   <h2>Edit Placement Details</h2>
 
 <div class="container">
-  <form action="saved.html">
+  <form action="saved.html" onsubmit="go()">
     <label for="id">ID</label>
     <input type="text" id="id" name="id" value="90">
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" value="Some Place">
     <label for="location">Location</label>
     <input type="text" id="location" name="location"value="D12">
+    <label for= "county">County</label>
+    <input type="text" id="county" name="county" value="Dublin">
       <label for="places">Total Places</label>
-    <input type="text" id="places" name="places" value="3"> 
+    <input type="text" id="places" name="places" value="3">
     <input type="submit" value="Save">
   </form>
-</div>    
-    
+  <script type="text/javascript" src="../main.js">
+      function go(){ editPlacement();}
+  </script>
 </div>
-     
+
+</div>
+
 </body>
-</html> 
+</html>
