@@ -13,10 +13,32 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 var csvjson = require('csvjson'); // Package to convert csv to json for easier editing of data
-var csvData = fs.readFileSync(path.join(__dirname, 'Students.csv'), { encoding : 'utf8'}); // Read in csv file
-var csvPlacement = fs.readFileSync(path.join(__dirname, 'Placements.csv'),{ encoding : 'utf8'});
 var jsonfile = require('jsonfile');
 var jsonToCsv = require('convert-json-to-csv');
+
+
+// Read in files
+try{
+  var csvData = fs.readFileSync(path.join(__dirname, 'Students.csv'), { encoding : 'utf8'}); // Read in csv file
+}catch (err){
+  if (err.code === 'ENOENT') {
+    console.log('File not found!');
+    console.log('Path of file in parent dir:', require('path').resolve(__dirname, 'Students.csv'));
+  } else {
+    throw err;
+  }
+}
+
+try{
+  var csvPlacement = fs.readFileSync(path.join(__dirname, 'Placements.csv'),{ encoding : 'utf8'});
+}catch (err){
+  if (err.code === 'ENOENT') {
+    console.log('File not found!');
+  } else {
+    throw err;
+  }
+}
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -34,7 +56,7 @@ function createWindow () {
   }))
 
 //  Open the DevTools.
-  //mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -83,7 +105,7 @@ var placementJson = csvjson.toObject(csvPlacement, csvOptions);
 
 //Testing the add, edit and remove functions
 studentJson = addStudent(studentJson, "00000", "Test Name","1", "D1", "000","Dublin");
-studentJson = editStudent(studentJson, "00000", "John Doe","1", "D3","111","Dublin");
+// studentJson = editStudent(studentJson, "00000", "John Doe","1", "D3","111","Dublin");
 //studentJson = removeStudent(studentJson,"00000")
 
 placementJson = addPlacement(placementJson, "191","D1","Dublin","1");
@@ -94,13 +116,13 @@ jsonfile.writeFile('studentJson.json',studentJson, function(err){
   if(err)
     console.error(err)});
 
-console.log(studentJson);
+// console.log(studentJson);
 
 jsonfile.writeFile('placementJson.json',placementJson, function(err){
   if(err)
   console.error(err)});
 
-console.log(placementJson);
+// console.log(placementJson);
 
 //json to csv
 var columnHeaderArray=["Number","Name","Year", "Current Placement", "Location","County"];
