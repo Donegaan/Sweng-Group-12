@@ -38,6 +38,16 @@ try{
     throw err;
   }
 }
+try{
+  var csvPrevPlace = fs.readFileSync(path.join(__dirname, 'Previous Placements.csv'),{ encoding : 'utf8'});
+}catch (err){
+  if (err.code === 'ENOENT') {
+    console.log('File not found!');
+  } else {
+    throw err;
+  }
+}
+
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -102,7 +112,10 @@ var csvOptions = {
 //-------------------------Write to JSON ---------------------------------------
 var studentJson = csvjson.toObject(csvData,csvOptions);
 var placementJson = csvjson.toObject(csvPlacement, csvOptions);
+var previousPlaceJson = csvjson.toObject(csvPrevPlace, csvOptions);
 
+
+addPreviousPlacements();
 //Testing the add, edit and remove functions
 //studentJson = addStudent(studentJson, "00000", "Test Name","1", "D1", "000","Dublin");
 //
@@ -327,5 +340,33 @@ function displayStudents(studentJson, placementJson)  //To check via console if 
  console.log( "Student County " + studentJson[i].County.toString() + "\n" );
 
  }
+}
 
+function addPreviousPlacements(){
+
+  for(i=0; i<previousPlaceJson.length;i++){
+    for(j=0; j<studentJson.length;j++){
+      if(previousPlaceJson[i]["Student Number"] == studentJson[j]["Number"])
+      {
+      //  console.log("Match found adding previous placements to object")
+        // First Placement
+        if(previousPlaceJson[i]["Placement 1 ID"] == "NA")
+          studentJson[j]["Placement 1"] = "";
+        else
+          studentJson[j]["Placement 1"] = previousPlaceJson[i]["Placement 1 ID"];
+        // Second Placement
+        if(previousPlaceJson[i]["Placement 2 ID"] == "NA")
+          studentJson[j]["Placement 2"] = "";
+        else
+          studentJson[j]["Placement 2"] = previousPlaceJson[i]["Placement 2 ID"];
+        // Third Placements
+        if(previousPlaceJson[i]["Placement 3 ID"] == "NA")
+          studentJson[j]["Placement 3"] = "";
+        else
+          studentJson[j]["Placement 3"] = previousPlaceJson[i]["Placement 3 ID"];
+
+      }
+    }
+  }
+//  console.log(studentJson);
 }
