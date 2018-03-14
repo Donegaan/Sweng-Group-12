@@ -231,188 +231,88 @@ function removeStudent(jsonData, number){
   return jsonData
 }
 
-// reading in data from students file
-fs.readFile('students.csv', function (err, data){
-  if(err) {
-    return console.error(err);
-  }
-  //various array declarations
-  var input = data + '';
-  var fields = input.split(/[\n,]+/);
-  var studentNumber = [];
-  var studentName = [];
-  var studentYear = [];
-  var studentPlacement = [];
-  var studentLocation = [];
-  var studentCounties = [];
-
-  //separate into array with student number
-  for( i=6; i<=fields.length;)
-  {
-    studentNumber.push(fields[i])
-    i = i+6;
-  }
-
-  // separate into array with student names
-  for( i=7; i<=fields.length;)
-  {
-    studentName.push(fields[i])
-    i = i+6;
-  }
-    // separate into array with student year
-    for( i=8; i<=fields.length;)
-    {
-      studentYear.push(fields[i])
-      i = i+6;
-    }
-
-    // separate into array with student current placement
-    for( i=9; i<=fields.length;)
-    {
-      studentPlacement.push(fields[i])
-      i = i+6;
-    }
-
-    // separate into array with student location
-    for( i=10; i<=fields.length;)
-    {
-      studentLocation.push(fields[i])
-      i = i+6;
-    }
-
-    // separate into array with student counties
-    for( i=11; i<=fields.length;)
-    {
-      studentCounties.push(fields[i])
-      i = i+6;
-    }
-
-  //displayStudents(studentName, studentLocation, studentPlacement, studentNumber,studentYear, studentCounties);
-});
-
-// reading in data from Previous Placements file
-fs.readFile('Previous Placements.csv', function (err, data){
-  if(err) {
-    return console.error(err);
-  }
-
-  //various array declarations
-  var input = data + '';
-  var fields = input.split(/[\n,]+/);
-  var studentNumber = [];
-  var placementOne = [];
-  var placementTwo = [];
-  var placementThree = [];
-
-  //separate into array with placem
-  for( i=4; i<=fields.length;)
-  {
-    studentNumber.push(fields[i])
-    i = i+4;
-  }
-
-  //separate into array with placementOne locations
-  for( i=5; i<=fields.length;)
-  {
-    placementOne.push(fields[i])
-    i = i+4;
-  }
-
-  // separate into array with placementTwo location
-  for( i=6; i<=fields.length;)
-  {
-    placementTwo.push(fields[i])
-    i = i+4;
-  }
-
-  // separate into array with placementThree location
-  for( i=7; i<=fields.length;)
-  {
-    placementThree.push(fields[i])
-    i = i+4;
-  }
-
-  //displayPastPlacement(studentNumber, placementOne, placementTwo, placementThree);
- });
-
-// reading in data from Placements file
-fs.readFile('Placements.csv', function (err, data){
-  if(err) {
-    return console.error(err);
-  }
-
-  //various array declarations
-  var input = data + '';
-  var fields = input.split(/[\n,]+/);
-  var placementIds = [];
-  var placementLocations = [];
-  var numberOfPlacements = [];
-  var placementCounty = [];
-
-  //separate into array with iDs
-  for( i=4; i<=fields.length;)
-  {
-    placementIds.push(fields[i])
-    i = i+4;
-  }
-
-  // separate into array with number of placements
-  for( i=5; i<=fields.length;)
-  {
-    numberOfPlacements.push(fields[i])
-    i = i+4;
-  }
-
-  //separate into array with locations
-  for( i=6; i<=fields.length;)
-  {
-    placementLocations.push(fields[i])
-    i = i+4;
-  }
-
-  // separate into array with county
-  for( i=7; i<=fields.length;)
-  {
-    placementCounty.push(fields[i])
-    i = i+4;
-  }
-
-  //displayPlacementLocations(placementIds, placementLocations, numberOfPlacements, placementCounty);
-
-  });
-
-function displayStudents(studentName, studentLocation, studentPlacement, studentNumber,studentYear, studentCounties)
+//assignStudent(studentJson, placementJson);
+function assignStudent(studentJson, placementJson)
 {
- for(i =0; i<studentPlacement.length; i++)
+
+// Assigning fourth years first which have a "Perfect match"
+for(i=0; i<studentJson.length; i++)         //Looping through students
+{ 
+  for(j=0; j<placementJson.length ; j++)    //Looping through placements
+  {
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
+//Finding Fourth Years with Correct County but not specific location
+for(i=0; i<studentJson.length; i++)      
+{ 
+  for(j=0; j<placementJson.length ; j++)
+  {
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location != placementJson[j].Location && studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
+//Assigning remaining year groups with correct location
+for( i=0; i<studentJson.length; i++)
+{
+  for( j=0; j<placementJson.length; j++)
+  {
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
+//Remaining years, with correct Location
+for( i=0; i<studentJson.length; i++)
+{
+  for( j=0; j<placementJson.length; j++)
+  { 
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Location != placementJson[j].Location && studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
+//Left over students
+for( i=0; i<studentJson.length; i++)
+{
+  for( j=0; j<placementJson.length; j++)
+  { 
+  if(studentJson[i]["Current Placement"] == "" && studentJson[i].Location != placementJson[j].Location && studentJson[i].County != placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+displayStudents(studentJson, placementJson);
+}
+function studentAllocation(studentJson, placementJson)
+{
+  studentJson[i]["Current Placement"] = placementJson[j].ID;      //Assign placement ID to student current placement
+  placementJson[j]["Number of Placements"] = placementJson[j]["Number of Placements"] -1; //Decrement number of placements left at the location
+}
+function displayStudents(studentJson, placementJson)  //To check via console if placement is successful
+{
+ for(i =0; i<studentJson.length; i++)
  {
- console.log( "Number " + studentNumber[i].toString() + "." );
- console.log( "Name: " + studentName[i].toString() + ". " );
- console.log( "Location " + studentLocation[i].toString() + "." );
- console.log( "Current Placement " + studentPlacement[i].toString() + "." );
- console.log( "Student Year " + studentYear[i].toString() + "." );
- console.log( "Student County " + studentCounties[i].toString() + "\n" );
+
+ console.log( "Number " + studentJson[i].Number.toString() + "." );
+ console.log( "Name: " + studentJson[i].Name.toString() + ". " );
+ console.log( "Location " + studentJson[i].Location.toString() + "." );
+ console.log( "Current Placement " + studentJson[i]["Current Placement"].toString() + "." );
+ console.log( "Student Year " + studentJson[i].Year.toString() + "." );
+ console.log( "Student County " + studentJson[i].County.toString() + "\n" );
+
  }
-}
 
-function displayPlacementLocations(placementIds, placementLocations, numberOfPlacements, placementCounty)
-{
-  for(i =0; i<placementIds.length -1; i++)
-  {
-  console.log( "ID of Placement: " + placementIds[i].toString() + ". " );
-  console.log( "Number of places: " + numberOfPlacements[i].toString() + "." );
-  console.log( "Location: " + placementLocations[i].toString() + ". " );
-  console.log( "County: " + placementCounty[i].toString() + "\n" );
-
-  }
-}
-
-function displayPastPlacement(studentNumber, placementOne, placementTwo, placementThree)
-{
-  for(i=0; i<studentNumber.length -1; i++)
-  {
-   console.log( "ID: " + studentNumber[i].toString() + ". " );
-   console.log( "PlacementOne: " + placementOne[i].toString() + ". " );
-   console.log( "PlacementTwo: " + placementTwo[i].toString() + ". " );
-   console.log( "PlacementThree: " + placementThree[i].toString() + "\n" );
-  }
 }
