@@ -14,11 +14,14 @@ body {
     padding-top: 20px;
 }
 
-h2, form{
+h2, form,p{
     padding-left: 10px;
     padding-top: 20px;
 }
 
+input{
+    padding-left: 20px;
+}
 .sidenav a {
     padding: 20px 20px 20px 20px;
     text-decoration: none;
@@ -54,11 +57,17 @@ h2, form{
     cursor: pointer;
 }
 
-/* Darker background on mouse-over */
 .btn:hover {
     background-color: RoyalBlue;
 }
 
+table{
+    padding left: 80px;
+    padding-top: 25px;
+}
+button{
+    padding :2px;
+}
 input[type=text], select, textarea {
     width: 100%;
     padding: 12px;
@@ -94,6 +103,7 @@ input[type=submit]:hover {
 }
 
 #parsed_csv_list{
+    padding-left : 40px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 80%;
