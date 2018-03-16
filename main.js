@@ -13,10 +13,42 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 var csvjson = require('csvjson'); // Package to convert csv to json for easier editing of data
-var csvData = fs.readFileSync(path.join(__dirname, 'Students.csv'), { encoding : 'utf8'}); // Read in csv file
-var csvPlacement = fs.readFileSync(path.join(__dirname, 'Placements.csv'),{ encoding : 'utf8'});
 var jsonfile = require('jsonfile');
 var jsonToCsv = require('convert-json-to-csv');
+
+
+// Read in files
+try{
+  var csvData = fs.readFileSync(path.join(__dirname, 'Students.csv'), { encoding : 'utf8'}); // Read in csv file
+}catch (err){
+  if (err.code === 'ENOENT') {
+    console.log('File not found!');
+    console.log('Path of file in parent dir:', require('path').resolve(__dirname, 'Students.csv'));
+  } else {
+    throw err;
+  }
+}
+
+try{
+  var csvPlacement = fs.readFileSync(path.join(__dirname, 'Placements.csv'),{ encoding : 'utf8'});
+}catch (err){
+  if (err.code === 'ENOENT') {
+    console.log('File not found!');
+  } else {
+    throw err;
+  }
+}
+try{
+  var csvPrevPlace = fs.readFileSync(path.join(__dirname, 'Previous Placements.csv'),{ encoding : 'utf8'});
+}catch (err){
+  if (err.code === 'ENOENT') {
+    console.log('File not found!');
+  } else {
+    throw err;
+  }
+}
+
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -80,39 +112,44 @@ var csvOptions = {
 //-------------------------Write to JSON ---------------------------------------
 var studentJson = csvjson.toObject(csvData,csvOptions);
 var placementJson = csvjson.toObject(csvPlacement, csvOptions);
+var previousPlaceJson = csvjson.toObject(csvPrevPlace, csvOptions);
 
+
+addPreviousPlacements();
 //Testing the add, edit and remove functions
-studentJson = addStudent(studentJson, "00000", "Test Name","1", "D1", "000","Dublin");
-studentJson = editStudent(studentJson, "00000", "John Doe","1", "D3","111","Dublin");
+//studentJson = addStudent(studentJson, "00000", "Test Name","1", "D1", "000","Dublin");
+//
 //studentJson = removeStudent(studentJson,"00000")
 
-placementJson = addPlacement(placementJson, "191","D1","Dublin","1");
-placementJson = editPlacement(placementJson,"191","D3","Dublin","3");
+//placementJson = addPlacement(placementJson, "191","D1","Dublin","1");
+//placementJson = editPlacement(placementJson,"191","D3","Dublin","3");
 //placementJson = removePlacement(placementJson,"191");
 
-jsonfile.writeFile('studentJson.json',studentJson, function(err){
-  if(err)
-    console.error(err)});
+//jsonfile.writeFile('studentJson.json',studentJson, function(err){
+//  if(err)
+//    console.error(err)});
 
-console.log(studentJson);
+// console.log(studentJson);
 
-jsonfile.writeFile('placementJson.json',placementJson, function(err){
-  if(err)
-  console.error(err)});
+//jsonfile.writeFile('placementJson.json',placementJson, function(err){
+//  if(err)
+//  console.error(err)});
 
-console.log(placementJson);
+// console.log(placementJson);
 
 //json to csv
-var columnHeaderArray=["Number","Name","Year", "Current Placement", "Location","County"];
-csvData = jsonToCsv.convertArrayOfObjects(studentJson, columnHeaderArray);
-csvData = csvData.replace(/"/g, '');
-fs.writeFile('Students.csv',csvData,'utf8', null);
-
-
-var columnHeaderArray=["ID","Number of Placements","Location","County"];
-csvPlacement = jsonToCsv.convertArrayOfObjects(placementJson, columnHeaderArray);
-csvPlacement = csvPlacement.replace(/"/g, '');
-fs.writeFile('Placements.csv',csvPlacement, 'utf8', null);
+function writeToStudentCsv(){
+  var columnHeaderArray=["Number","Name","Year", "Current Placement", "Location","County"];
+  csvData = jsonToCsv.convertArrayOfObjects(studentJson, columnHeaderArray);
+  csvData = csvData.replace(/"/g, '');
+  fs.writeFile('Students.csv',csvData,'utf8', null);
+}
+function writeToPlacementCsv(){
+  var columnHeaderArray=["ID","Number of Placements","Location","County"];
+  csvPlacement = jsonToCsv.convertArrayOfObjects(placementJson, columnHeaderArray);
+  csvPlacement = csvPlacement.replace(/"/g, '');
+  fs.writeFile('Placements.csv',csvPlacement, 'utf8', null);
+}
 //Adds a new placement to the list
 function addPlacement(placementJson, id, location, county, numPlacements){
 
@@ -131,18 +168,23 @@ function addPlacement(placementJson, id, location, county, numPlacements){
   return placementJson;
 }
 //Searches for placement by ID and edits according to new parameters
-function editPlacement(placementJson, id, location, county, numPlacements){
+function editPlacement(){
+
+  var placementId = document.getElementById("id").value;
 
   for (var i=0; i<placementJson.length; i++){
-    if(placementJson[i].ID ==id){
-      placementJson[i].Location = location;
-      placementJson[i].County = county;
-      placementJson[i]["Number of Placements"] = numPlacements;
+    if(placementJson[i].ID ==placmentId){
+      placementJson[i].Location = document.getElementById("location").value;
+      placementJson[i].County = doucument.getElementById("county").value;
+      placementJson[i]["Number of Placements"] = document.getElementById("places").value;
+      console.log("works");
     }
     else if(i==placementJson.length-1)
       console.log("Placement doesnt exist");
   }
-  return placementJson;
+  writeToPlacementCsv();
+  jsonfile.writeFile('placementJson.json',placementJson, function(err){
+  if(err) console.error(err)});
 }
 //Removes a placement based on ID
 function removePlacement(placementJson, id){
@@ -180,21 +222,27 @@ function addStudent(jsonData, number, name, year, location, currentPlacement,cou
 /*
   Edits a students details based and searches based on student number
 */
-function editStudent(jsonData, number, name, year, location, currentPlacement, county) {
-
-  for (var i=0; i<jsonData.length; i++){
-    if(jsonData[i].Number == number){
-      jsonData[i].Name = name;
-      jsonData[i].Year = year;
-      jsonData[i].Location = location;
-      jsonData[i]["Current Placement"] = currentPlacement;
-      jsonData[i].County = county
-
+function editStudent() {
+  console.log("works");
+  var studentNumber = document.getElementById("id").value;
+  // console.log(studentNumber+" Works");
+  for (var i=0; i<studentJson.length; i++){
+    if(studentJson[i].Number == studentNumber){
+      studentJson[i].Name = document.getElementById("name").value;
+      studentJson[i].Year = document.getElementById("year").value;
+      studentJson[i].Location = document.getElementById("location").value;
+      studentJson[i]["Current Placement"] = document.getElementById("currPlace").value;
+      studentJson[i].County = document.getElementById("county").value;
+      console.log("works");
     }
     else if(i==jsonData.length-1)
       console.log("Student doesn't exist");
   }
-  return jsonData;
+  //Writing to the json and the csv
+  writeToStudentCsv();
+  jsonfile.writeFile('studentJson.json',studentJson, function(err){
+    if(err) console.error(err)});
+  // return jsonData;
 }
 /*
   Removes a student from the list based on their student number.
@@ -209,188 +257,116 @@ function removeStudent(jsonData, number){
   return jsonData
 }
 
-// reading in data from students file
-fs.readFile('students.csv', function (err, data){
-  if(err) {
-    return console.error(err);
-  }
-  //various array declarations
-  var input = data + '';
-  var fields = input.split(/[\n,]+/);
-  var studentNumber = [];
-  var studentName = [];
-  var studentYear = [];
-  var studentPlacement = [];
-  var studentLocation = [];
-  var studentCounties = [];
-
-  //separate into array with student number
-  for( i=6; i<=fields.length;)
-  {
-    studentNumber.push(fields[i])
-    i = i+6;
-  }
-
-  // separate into array with student names
-  for( i=7; i<=fields.length;)
-  {
-    studentName.push(fields[i])
-    i = i+6;
-  }
-    // separate into array with student year
-    for( i=8; i<=fields.length;)
-    {
-      studentYear.push(fields[i])
-      i = i+6;
-    }
-
-    // separate into array with student current placement
-    for( i=9; i<=fields.length;)
-    {
-      studentPlacement.push(fields[i])
-      i = i+6;
-    }
-
-    // separate into array with student location
-    for( i=10; i<=fields.length;)
-    {
-      studentLocation.push(fields[i])
-      i = i+6;
-    }
-
-    // separate into array with student counties
-    for( i=11; i<=fields.length;)
-    {
-      studentCounties.push(fields[i])
-      i = i+6;
-    }
-
-  //displayStudents(studentName, studentLocation, studentPlacement, studentNumber,studentYear, studentCounties);
-});
-
-// reading in data from Previous Placements file
-fs.readFile('Previous Placements.csv', function (err, data){
-  if(err) {
-    return console.error(err);
-  }
-
-  //various array declarations
-  var input = data + '';
-  var fields = input.split(/[\n,]+/);
-  var studentNumber = [];
-  var placementOne = [];
-  var placementTwo = [];
-  var placementThree = [];
-
-  //separate into array with placem
-  for( i=4; i<=fields.length;)
-  {
-    studentNumber.push(fields[i])
-    i = i+4;
-  }
-
-  //separate into array with placementOne locations
-  for( i=5; i<=fields.length;)
-  {
-    placementOne.push(fields[i])
-    i = i+4;
-  }
-
-  // separate into array with placementTwo location
-  for( i=6; i<=fields.length;)
-  {
-    placementTwo.push(fields[i])
-    i = i+4;
-  }
-
-  // separate into array with placementThree location
-  for( i=7; i<=fields.length;)
-  {
-    placementThree.push(fields[i])
-    i = i+4;
-  }
-
-  //displayPastPlacement(studentNumber, placementOne, placementTwo, placementThree);
- });
-
-// reading in data from Placements file
-fs.readFile('Placements.csv', function (err, data){
-  if(err) {
-    return console.error(err);
-  }
-
-  //various array declarations
-  var input = data + '';
-  var fields = input.split(/[\n,]+/);
-  var placementIds = [];
-  var placementLocations = [];
-  var numberOfPlacements = [];
-  var placementCounty = [];
-
-  //separate into array with iDs
-  for( i=4; i<=fields.length;)
-  {
-    placementIds.push(fields[i])
-    i = i+4;
-  }
-
-  // separate into array with number of placements
-  for( i=5; i<=fields.length;)
-  {
-    numberOfPlacements.push(fields[i])
-    i = i+4;
-  }
-
-  //separate into array with locations
-  for( i=6; i<=fields.length;)
-  {
-    placementLocations.push(fields[i])
-    i = i+4;
-  }
-
-  // separate into array with county
-  for( i=7; i<=fields.length;)
-  {
-    placementCounty.push(fields[i])
-    i = i+4;
-  }
-
-  //displayPlacementLocations(placementIds, placementLocations, numberOfPlacements, placementCounty);
-
-  });
-
-function displayStudents(studentName, studentLocation, studentPlacement, studentNumber,studentYear, studentCounties)
+//assignStudent(studentJson, placementJson);
+function assignStudent(studentJson, placementJson)
 {
- for(i =0; i<studentPlacement.length; i++)
+
+// Assigning fourth years first which have a "Perfect match"
+for(i=0; i<studentJson.length; i++)         //Looping through students
+{
+  for(j=0; j<placementJson.length ; j++)    //Looping through placements
+  {
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
+//Finding Fourth Years with Correct County but not specific location
+for(i=0; i<studentJson.length; i++)
+{
+  for(j=0; j<placementJson.length ; j++)
+  {
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location != placementJson[j].Location && studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
+//Assigning remaining year groups with correct location
+for( i=0; i<studentJson.length; i++)
+{
+  for( j=0; j<placementJson.length; j++)
+  {
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
+//Remaining years, with correct Location
+for( i=0; i<studentJson.length; i++)
+{
+  for( j=0; j<placementJson.length; j++)
+  {
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Location != placementJson[j].Location && studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
+//Left over students
+for( i=0; i<studentJson.length; i++)
+{
+  for( j=0; j<placementJson.length; j++)
+  {
+  if(studentJson[i]["Current Placement"] == "" && studentJson[i].Location != placementJson[j].Location && studentJson[i].County != placementJson[j].County && placementJson[j]["Number of Placements"] > 0)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+displayStudents(studentJson, placementJson);
+}
+function studentAllocation(studentJson, placementJson)
+{
+  studentJson[i]["Current Placement"] = placementJson[j].ID;      //Assign placement ID to student current placement
+  placementJson[j]["Number of Placements"] = placementJson[j]["Number of Placements"] -1; //Decrement number of placements left at the location
+}
+function displayStudents(studentJson, placementJson)  //To check via console if placement is successful
+{
+ for(i =0; i<studentJson.length; i++)
  {
- console.log( "Number " + studentNumber[i].toString() + "." );
- console.log( "Name: " + studentName[i].toString() + ". " );
- console.log( "Location " + studentLocation[i].toString() + "." );
- console.log( "Current Placement " + studentPlacement[i].toString() + "." );
- console.log( "Student Year " + studentYear[i].toString() + "." );
- console.log( "Student County " + studentCounties[i].toString() + "\n" );
+
+ console.log( "Number " + studentJson[i].Number.toString() + "." );
+ console.log( "Name: " + studentJson[i].Name.toString() + ". " );
+ console.log( "Location " + studentJson[i].Location.toString() + "." );
+ console.log( "Current Placement " + studentJson[i]["Current Placement"].toString() + "." );
+ console.log( "Student Year " + studentJson[i].Year.toString() + "." );
+ console.log( "Student County " + studentJson[i].County.toString() + "\n" );
+
  }
 }
 
-function displayPlacementLocations(placementIds, placementLocations, numberOfPlacements, placementCounty)
-{
-  for(i =0; i<placementIds.length -1; i++)
-  {
-  console.log( "ID of Placement: " + placementIds[i].toString() + ". " );
-  console.log( "Number of places: " + numberOfPlacements[i].toString() + "." );
-  console.log( "Location: " + placementLocations[i].toString() + ". " );
-  console.log( "County: " + placementCounty[i].toString() + "\n" );
+function addPreviousPlacements(){
 
-  }
-}
+  for(i=0; i<previousPlaceJson.length;i++){
+    for(j=0; j<studentJson.length;j++){
+      if(previousPlaceJson[i]["Student Number"] == studentJson[j]["Number"])
+      {
+      //  console.log("Match found adding previous placements to object")
+        // First Placement
+        if(previousPlaceJson[i]["Placement 1 ID"] == "NA")
+          studentJson[j]["Placement 1"] = "";
+        else
+          studentJson[j]["Placement 1"] = previousPlaceJson[i]["Placement 1 ID"];
+        // Second Placement
+        if(previousPlaceJson[i]["Placement 2 ID"] == "NA")
+          studentJson[j]["Placement 2"] = "";
+        else
+          studentJson[j]["Placement 2"] = previousPlaceJson[i]["Placement 2 ID"];
+        // Third Placements
+        if(previousPlaceJson[i]["Placement 3 ID"] == "NA")
+          studentJson[j]["Placement 3"] = "";
+        else
+          studentJson[j]["Placement 3"] = previousPlaceJson[i]["Placement 3 ID"];
 
-function displayPastPlacement(studentNumber, placementOne, placementTwo, placementThree)
-{
-  for(i=0; i<studentNumber.length -1; i++)
-  {
-   console.log( "ID: " + studentNumber[i].toString() + ". " );
-   console.log( "PlacementOne: " + placementOne[i].toString() + ". " );
-   console.log( "PlacementTwo: " + placementTwo[i].toString() + ". " );
-   console.log( "PlacementThree: " + placementThree[i].toString() + "\n" );
+      }
+    }
   }
+//  console.log(studentJson);
 }
