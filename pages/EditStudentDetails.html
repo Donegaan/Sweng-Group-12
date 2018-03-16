@@ -32,7 +32,20 @@
     <input type="text" id="county" name="county" value="Dublin">
     <label for="places">Current Placement ID</label>
     <input type="text" id="currPlace" name="currPlace" value="90">
-    <input type="submit" value="Save">
+<!--    <input type="submit" value="Save">-->
+      
+    <a class="saveBtn" href="#popup1">
+        Save
+    </a>
+
+
+<div id="popup1" class="overlay">
+	<div class="popup">
+		<h1>Changes saved</h1>
+		<a class="close" href="#">&times;</a>
+		
+</div>
+</div>
   </form>
   <script type ="text/javascript" src="../main.js">
     function go(){ editStudent();}
