@@ -3,11 +3,12 @@
  -------------------------*/
 
 
-const electron = require('electron');
+const electron = require('electron')
 // Module to control application life.
-const app = electron.app;
+const app = electron.app
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow;
+const BrowserWindow = electron.BrowserWindow
+var {ipcMain} = require('electron')
 
 const path = require('path');
 const url = require('url');
@@ -19,7 +20,7 @@ var jsonToCsv = require('convert-json-to-csv');
 
 // Read in files
 try{
-  var csvData = fs.readFileSync(path.join(__dirname, 'Students.csv'), { encoding : 'utf8'}); // Read in csv file
+  var csvData = fs.readFileSync(path.join('Students.csv'), { encoding : 'utf8'}); // Read in csv file
 }catch (err){
   if (err.code === 'ENOENT') {
     console.log('File not found!');
@@ -30,7 +31,7 @@ try{
 }
 
 try{
-  var csvPlacement = fs.readFileSync(path.join(__dirname, 'Placements.csv'),{ encoding : 'utf8'});
+  var csvPlacement = fs.readFileSync(path.join('Placements.csv'),{ encoding : 'utf8'});
 }catch (err){
   if (err.code === 'ENOENT') {
     console.log('File not found!');
@@ -327,20 +328,6 @@ function studentAllocation(studentJson, placementJson)
   studentJson[i]["Current Placement"] = placementJson[j].ID;      //Assign placement ID to student current placement
   placementJson[j]["Number of Placements"] = placementJson[j]["Number of Placements"] -1; //Decrement number of placements left at the location
 }
-function displayStudents(studentJson, placementJson)  //To check via console if placement is successful
-{
- for(i =0; i<studentJson.length; i++)
- {
-
- console.log( "Number " + studentJson[i].Number.toString() + "." );
- console.log( "Name: " + studentJson[i].Name.toString() + ". " );
- console.log( "Location " + studentJson[i].Location.toString() + "." );
- console.log( "Current Placement " + studentJson[i]["Current Placement"].toString() + "." );
- console.log( "Student Year " + studentJson[i].Year.toString() + "." );
- console.log( "Student County " + studentJson[i].County.toString() + "\n" );
-
- }
-}
 
 function addPreviousPlacements(){
 
@@ -370,3 +357,11 @@ function addPreviousPlacements(){
   }
 //  console.log(studentJson);
 }
+
+ipcMain.on('getStudentData',function(){
+  // var studentJson = csvjson.toObject(csvData,csvOptions);
+  // for(var i=0;i<studentJson.length;i++){
+  //   console.log(studentJson[i].Number)
+  // }
+  mainWindow.webContents.send('studentData',studentJson);
+})
