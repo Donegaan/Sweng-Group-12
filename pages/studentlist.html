@@ -9,7 +9,7 @@
       module = undefined;
     }
   </script>
-  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <!-- <script src="../node_modules/jquery/dist/jquery.min.js"></script> -->
   <script>
     if (window.module) module = window.module;
   </script>
@@ -38,30 +38,30 @@
   </div>
 
   <div class="main">
-  <div class="container">
-
-    <div class="table-responsive">
-      <h1 align="center">Student List</h1>
-      <br />
-      <div align="center">
-        <button type="button" name="load_data" id="load_data" class="btn btn-info">Load Data</button>
-      </div>
-      <br />
-      <input class="input" type="text" id="myInput" onkeyup="searchTable()" placeholder="Search by Student ID..." title="Type in a name">
-      <div class="rowStudents" id="parsed_csv_list">
-        <div class="row" id="parsed_csv_list">
+    <div class="container">
+      <!-- Data table -->
+      <div class="table-responsive">
+        <h1 align="center">Student List</h1>
+        <br />
+        <div align="center">
+          <button type="button" name="load_data" id="load_data" class="btn btn-info">Load Data</button>
         </div>
-        <div id="student_table">
+        <br />
+        <input class="input" type="text" id="myInput" onkeyup="searchTable()" placeholder="Search by Student ID..." title="Type in an ID">
+        <div class="rowStudents" id="parsed_csv_list">
+          <div class="row" id="parsed_csv_list">
+          </div>
+          <div id="student_table">
+          </div>
         </div>
       </div>
-    </div>
     </div>
 </body>
 
 </html>
 <!-- Display the data in html table -->
 <script>
-  $(document).ready(function () { 
+  $(document).ready(function () {
     $('#load_data').click(function () {
       $.ajax({
         url: "../Students.csv",

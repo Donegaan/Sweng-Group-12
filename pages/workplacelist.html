@@ -4,30 +4,28 @@
 <head>
 
     <title>Workplace List</title>
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
         if (typeof module === 'object') {
             window.module = module;
             module = undefined;
         }
     </script>
-    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- <script src="../node_modules/jquery/dist/jquery.min.js"></script> -->
     <script>
         if (window.module) module = window.module;
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" /> -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
 
     <script>
         window.jQuery = window.$ = require('jquery');
     </script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 
 </head>
 
@@ -38,27 +36,32 @@
         <a href="studentlist.html">Student List</a>
         <a href="workplacelist.html" class="active">Workplace List</a>
     </div>
-    <!-- Available Button -->
-    <button class="input" id="myInput" onclick="filterPlacements()" placeholder="Available" title="See available places">Available</button>
-    <div class="row" id="parsed_csv_list">
-    </div>
+    
 
-    </div>
-    <!-- Data table -->
+
+
     <div class="main">
         <div class="container">
+            <!-- Data table -->
             <div class="table-responsive">
                 <h1 align="center">Placement List</h1>
                 <br />
                 <div align="center">
                     <button type="button" name="load_data" id="load_data" class="btn btn-info">Load Data</button>
+                    <button class="input" id="available_btn" onclick="filterPlacements()" placeholder="Available" title="See available places">Available</button>
                 </div>
+                <!-- Available Button -->
+                
                 <br />
-                <div id="placements_table">
+                <input class="input" type="text" id="myInput" onkeyup="searchTable()" placeholder="Search by Placement ID..." title="Type in an ID">
+                <div class="rowPlacements" id="parsed_csv_list">
+                    <div class="row" id="parsed_csv_list">
+                    </div>
+                    <div id="placements_table">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </body>
 
 <!-- Display the data in html table -->
@@ -90,6 +93,24 @@
         });
 
     });
+
+    function searchTable() {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("placements_table");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 
     function filterPlacements() {
         console.log("FILTER CALLED !!!!!!!!!!!!!!!!!!!!!");
