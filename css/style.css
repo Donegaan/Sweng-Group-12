@@ -61,15 +61,6 @@ input{
     background-color: RoyalBlue;
 }
 
-<<<<<<< HEAD
-table{
-    padding left: 80px;
-    padding-top: 25px;
-}
-button{
-    padding :2px;
-}
-=======
 .saveBtn {
     position: relative;
 
@@ -154,7 +145,6 @@ h1 {
   }
 }
 
->>>>>>> cb873edccc55e7193e80d3a970dbbb4e1ddc867a
 input[type=text], select, textarea {
     width: 100%;
     padding: 12px;
@@ -219,7 +209,3 @@ input[type=submit]:hover {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-
-
-
-
