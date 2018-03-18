@@ -1,10 +1,12 @@
 language: node_js
 node_js: 
-  - "node"
+  - "6"
+  - "8"
 notifications:
   email: false
-# install:
-#   - npm install
+install:
+  - npm install
+  - npm update
 # script:
 #   - npm test
 os:
