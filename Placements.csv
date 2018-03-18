@@ -1,13 +1,8 @@
 ID,Number of Placements,Location,County
 90,0,D12,Dublin
 123,2,D1,Dublin
-<<<<<<< HEAD
-156,0,NAAS,Kildare
-649,4,D16,Dublin
-=======
 156,1,Naas,Kildare
 649,4,Galway,Galway
->>>>>>> cb873edccc55e7193e80d3a970dbbb4e1ddc867a
 372,2,D24,Dublin
 735,7,D2,Dublin
 56,2,D1,Dublin
