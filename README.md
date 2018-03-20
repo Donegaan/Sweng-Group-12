@@ -1,4 +1,4 @@
-# Sweng-Group-12
+# Sweng-Group-12    [![Build Status](https://travis-ci.org/Donegaan/Sweng-Group-12.svg?branch=master)](https://travis-ci.org/Donegaan/Sweng-Group-12)
 Repo for Allocation system for Students going on work placements
 
 # Install dependencies

@@ -36,7 +36,7 @@ input{
 }
 
 .sidenav a.active{
-     background-color:  #999999;
+     background-color:  royalblue;
     color: white;
 }
 
@@ -48,7 +48,7 @@ input{
 .btn {
     position: relative;
     bottom: 60px;
-    float: right;
+    float: center;
     background-color: DodgerBlue;
     border: none;
     color: white;
@@ -61,15 +61,6 @@ input{
     background-color: RoyalBlue;
 }
 
-<<<<<<< HEAD
-table{
-    padding left: 80px;
-    padding-top: 25px;
-}
-button{
-    padding :2px;
-}
-=======
 .saveBtn {
     position: relative;
 
@@ -91,7 +82,7 @@ button{
 h1 {
   text-align: center;
   font-family: Tahoma, Arial, sans-serif;
-  color: #06D85F;
+  color: dodgerblue;
   margin: 80px 0;
 }
 .overlay {
@@ -138,7 +129,7 @@ h1 {
   color: #333;
 }
 .popup .close:hover {
-  color: #06D85F;
+  color: dodgerblue;
 }
 .popup .content {
   max-height: 30%;
@@ -154,7 +145,6 @@ h1 {
   }
 }
 
->>>>>>> cb873edccc55e7193e80d3a970dbbb4e1ddc867a
 input[type=text], select, textarea {
     width: 100%;
     padding: 12px;
@@ -211,7 +201,7 @@ input[type=submit]:hover {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #4CAF50;
+    background-color: dodgerblue;
     color: white;
 }
 
@@ -219,7 +209,3 @@ input[type=submit]:hover {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-
-
-
-
