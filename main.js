@@ -299,6 +299,11 @@ ipcMain.on('getStudentData',function(){
 //assignStudent(studentJson, placementJson, previousPlaceJson);
 function assignStudent(studentJson, placementJson, previousPlaceJson)
 {
+  var Leinster = ["Dublin", "Meath", "Louth", "Kildare", "Kilkenny", "Offaly",
+                    "Westmeath", "Carlow", "Wexford", "Wicklow", "Laois", "Longford"];
+  var Ulster = ["Donegal", "Cavan", "Monaghan", "Fermanagh", "Antrim", "Tyrone", "Derry", "Down", "Armagh"];
+  var Munster = ["Cork", "Kerry", "Clare", "Limerick", "Tipperary", "Waterford"];
+  var Connacht = ["Mayo", "Galway", "Sligo", "Leitrim", "Roscommon"];
 
 // Assigning fourth years first which have a "Perfect match"
 for(i=0; i<studentJson.length; i++)         //Looping through students
@@ -347,6 +352,49 @@ for(i=0; i<studentJson.length; i++)
   }
 }
 
+//Assigning fourth years based on province
+for(i=0; i<studentJson.length; i++)
+{
+
+  if(Leinster.hasOwnProperty(studentJson[i].County))
+    studentJson[i].Province = "Leinster";
+  if(Munster.hasOwnProperty(studentJson[i].County))
+    studentJsoni[i].Province = "Munster";
+  if(Connacht.hasOwnProperty(studentJson[i].County))
+    studentJson[i].Province = "Connacht";
+  if(Ulster.hasOwnProperty(studentJson[i].County))
+    studentJson[i].Province = "Ulster";
+
+  for(j=0; j<placementJson.length ; j++)
+  {
+    if(Leinster.hasOwnProperty(studentJson[i].County))
+      placementJson[i].Province = "Leinster";
+    if(Munster.hasOwnProperty(studentJson[i].County))
+      placementJson[i].Province = "Munster";
+    if(Connacht.hasOwnProperty(studentJson[i].County))
+      placementJson[i].Province = "Connacht";
+    if(Ulster.hasOwnProperty(studentJson[i].County))
+      placementJson[i].Province = "Ulster";
+    var previousExperience = false;
+
+    if(studentJson[i]["Placement 1"] == placementJson[j].ID)
+      previousExperience = true;
+
+    if(studentJson[i]["Placement 2"] == placementJson[j].ID)
+      previousExperience = true;
+
+    if(studentJson[i]["Placement 3"] == placementJson[j].ID)
+      previousExperience = true;
+
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location != placementJson[j].Location && 
+    studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false &&
+    studentJson[i].Province == placementJson[j].Province)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
 //Assigning remaining year groups with correct location
 for( i=0; i<studentJson.length; i++)
 {
@@ -372,7 +420,7 @@ for( i=0; i<studentJson.length; i++)
   }
 }
 
-//Remaining years, with correct Location
+//Remaining years, with correct county
 for( i=0; i<studentJson.length; i++)
 {
   for( j=0; j<placementJson.length; j++)
@@ -391,6 +439,49 @@ for( i=0; i<studentJson.length; i++)
 
     if(studentJson[i]["Current Placement"] == "" && studentJson[i].Location != placementJson[j].Location && 
     studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
+    {
+      studentAllocation(studentJson, placementJson);
+    }
+  }
+}
+
+//Remaining students with correct province
+for(i=0; i<studentJson.length; i++)
+{
+
+  if(Leinster.hasOwnProperty(studentJson[i].County))
+    studentJson[i].Province = "Leinster";
+  if(Munster.hasOwnProperty(studentJson[i].County))
+    studentJsoni[i].Province = "Munster";
+  if(Connacht.hasOwnProperty(studentJson[i].County))
+    studentJson[i].Province = "Connacht";
+  if(Ulster.hasOwnProperty(studentJson[i].County))
+    studentJson[i].Province = "Ulster";
+
+  for(j=0; j<placementJson.length ; j++)
+  {
+    if(Leinster.hasOwnProperty(studentJson[i].County))
+      placementJson[i].Province = "Leinster";
+    if(Munster.hasOwnProperty(studentJson[i].County))
+      placementJson[i].Province = "Munster";
+    if(Connacht.hasOwnProperty(studentJson[i].County))
+      placementJson[i].Province = "Connacht";
+    if(Ulster.hasOwnProperty(studentJson[i].County))
+      placementJson[i].Province = "Ulster";
+    var previousExperience = false;
+
+    if(studentJson[i]["Placement 1"] == placementJson[j].ID)
+      previousExperience = true;
+
+    if(studentJson[i]["Placement 2"] == placementJson[j].ID)
+      previousExperience = true;
+
+    if(studentJson[i]["Placement 3"] == placementJson[j].ID)
+      previousExperience = true;
+
+    if(studentJson[i]["Current Placement"] == "" && studentJson[i].Location != placementJson[j].Location && 
+    studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false &&
+    studentJson[i].Province == placementJson[j].Province)
     {
       studentAllocation(studentJson, placementJson);
     }
@@ -421,7 +512,7 @@ for( i=0; i<studentJson.length; i++)
     }
   }
 }
-displayStudents(studentJson, placementJson);
+//displayStudents(studentJson, placementJson);
 }
 
 function studentAllocation(studentJson, placementJson)
