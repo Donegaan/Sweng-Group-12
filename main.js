@@ -118,6 +118,9 @@ var csvOptions = {
 //console.log(jsonData);
 
 //-------------------------Write to JSON ---------------------------------------
+function getStudentData(){
+  return csvjson.toObject(csvData,csvOptions);
+}
 var studentJson = csvjson.toObject(csvData,csvOptions);
 var placementJson = csvjson.toObject(csvPlacement, csvOptions);
 var previousPlaceJson = csvjson.toObject(csvPrevPlace, csvOptions);
@@ -263,9 +266,10 @@ function addProvinces(){
   Edits a students details based and searches based on student number
 */
 function editStudent() {
-  console.log("works");
+  console.log("edit called");
   var studentNumber = document.getElementById("id").value;
   // console.log(studentNumber+" Works");
+  var studentJson = getStudentData();
   for (var i=0; i<studentJson.length; i++){
     if(studentJson[i].Number == studentNumber){
       studentJson[i].Name = document.getElementById("name").value;
@@ -275,11 +279,11 @@ function editStudent() {
       studentJson[i].County = document.getElementById("county").value;
       console.log("works");
     }
-    else if(i==jsonData.length-1)
+    else if(i==studentJson.length-1)
       console.log("Student doesn't exist");
   }
   //Writing to the json and the csv
-  writeToStudentCsv();
+  // writeToStudentCsv();
   jsonfile.writeFile('studentJson.json',studentJson, function(err){
     if(err) console.error(err)});
   // return jsonData;
