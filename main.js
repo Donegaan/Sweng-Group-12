@@ -150,13 +150,13 @@ addProvinces();
 
 //json to csv
 
-function writeToStudentCsv(){
+function writeToStudentCsv(studentJson){
   var columnHeaderArray=["Number","Name","Year", "Location","County", "Allocated Placement"];
   csvData = jsonToCsv.convertArrayOfObjects(studentJson, columnHeaderArray);
   csvData = csvData.replace(/"/g, '');
   fs.writeFile('Students.csv',csvData,'utf8', null);
 }
-function writeToPlacementCsv(){
+function writeToPlacementCsv(placementJson){
   var columnHeaderArray=["ID","Number of Placements","Location","County"];
   csvPlacement = jsonToCsv.convertArrayOfObjects(placementJson, columnHeaderArray);
   csvPlacement = csvPlacement.replace(/"/g, '');
@@ -284,7 +284,7 @@ function editStudent() {
       console.log("Student doesn't exist");
   }
   //Writing to the json and the csv
-  // writeToStudentCsv();
+  writeToStudentCsv(studentJson);
   jsonfile.writeFile('studentJson.json',studentJson, function(err){
     if(err) console.error(err)});
   // return jsonData;
