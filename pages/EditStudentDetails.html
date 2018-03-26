@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
 </head>
-<body>
+<body onload="receiveStudent()">
 
 <div class="sidenav">
     <a href="assign.html">Assign</a>
@@ -17,24 +17,32 @@
 </div>
 
 <div class="main">
-  <h2>Edit Student Details</h2>
+  <h2>Edit Student Details </h2>
+    <p>Student Number: <b id ="id"></b></p>
+<!--
+    <textarea id = "sample"></textarea>
+    <textarea id = "sample1"></textarea>
+-->
+    
 <div class="container">
   <form action="saved.html" onsubmit="go()">
+<!--
     <label for="id">Student Number</label>
-    <input type="text" id="id" name="id" value="12345">
+    <input type="text" id="id" name="id" value="">
+-->
     <label for="name">Full Name</label>
-    <input type="text" id="name" name="name" value="Sarah Jones">
+    <input type="text" id="name" name="name" value="">
     <label for="year">Year</label>
-    <input type="text" id="year" name="year" value="3">
+    <input type="text" id="year" name="year" value="">
     <label for="location">Location</label>
-    <input type="text" id="location" name="location"value="D1">
+    <input type="text" id="location" name="location"value="">
     <label for="county">County</label>
-    <input type="text" id="county" name="county" value="Dublin">
+    <input type="text" id="county" name="county" value="">
     <label for="places">Current Placement ID</label>
-    <input type="text" id="currPlace" name="currPlace" value="90">
+    <input type="text" id="currPlace" name="currPlace" value="">
 <!--    <input type="submit" value="Save"> href="#popup1"-->
 
-    <a class="saveBtn" onclick="check()">
+    <a class="saveBtn"  onclick="check()">
         Save
     </a>
 
@@ -48,13 +56,34 @@
 </div>
   </form>
     <script>
+    function receiveStudent(){
+    var student = decodeURIComponent(window.location.search);
+    
+    student=student.substring(1);
+        
+    var newString = student.replace("stud=?stud=<td>", "");
+
+    var splitString = newString.split("</td><td>");
+    
+    document.getElementById("id").innerHTML =  splitString[0];  
+    document.getElementById("name").value =  splitString[1];
+    document.getElementById("year").value =  splitString[2];    
+    document.getElementById("location").value =  splitString[3];  
+    document.getElementById("county").value =  splitString[4];
+    document.getElementById("currPlace").value =  splitString[5].replace("</td>", "");
+        
+    //document.getElementById("sample").innerHTML =  student;
+    //document.getElementById("sample1").innerHTML =  splitString;  
+    }
+        
+            
     function check()
     {
     var btn = document.getElementById("save");
     var savePopup = document.getElementById("popup1");
     
         
-    var studentId = document.getElementById("id").value;
+   
     var studentName = document.getElementById("name").value;
     
     var studentYr = document.getElementById("year").value;
@@ -62,11 +91,8 @@
     var studentCounty = document.getElementById("county").value;
     var curPlace = document.getElementById("currPlace").value;
     
-    if(studentId == "")
-        {
-            alert("No id!");
-        }
-     else if(studentName == "")
+
+     if(studentName == "")
         {
             alert("No name!");
         }
@@ -94,10 +120,9 @@
 //    savePopup.style.display = "block";
 //}
         editStudent();
-        
-        
+       
     }
-    }
+}
 
     </script>
   <script type ="text/javascript" src="../main.js">

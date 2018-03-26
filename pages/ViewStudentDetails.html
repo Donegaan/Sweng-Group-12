@@ -38,10 +38,11 @@
 </style>
 
 <a href="EditStudentDetails.html">
-<button  class="editBtn" type="button" id="editPlacement"><i class="fa fa-edit" ></i>Edit</button>
+<button  class="editBtn" type="button" id="editPlacement" onclick = sendDetails()><i class="fa fa-edit" ></i>Edit</button>
 </a>
 
 
+    
 <table id="student-list">
   <tr>
     <th>Student Number</th>
@@ -114,33 +115,27 @@
 
 </div>
 <script>
+    var data;
   function receiveStudent(){
     var student = decodeURIComponent(window.location.search);
+    data = student;
     student=student.substring(1);
     console.log(student);
       
-    var newString = student.replace("stud=<td>", "");
-    var newString1 = newString.replace("</td><td>", " ");  
-   
-    var newString2 = newString1;
-      
-      for (i = 0; i < 7; i++) { 
-          
-        newString2 = newString2.replace("</td><td>", " ");  
-      }   
+    var newString = student.replace("stud=<td>", ""); 
    
       
-    const splitString = newString2.split(" ");
+    const splitString = newString.split("</td><td>");
     
 
       
     var id = splitString[0];
-    var name = splitString[1] + " " + splitString[2];
-    var year = splitString[3];
-    var studentlocation = splitString[4];
-    var currentPlace = splitString[6];
-    var county = splitString[5];
-    
+    var name = splitString[1] 
+    var year = splitString[2];
+    var studentlocation = splitString[3];
+    var currentPlace = splitString[5];
+    var county = splitString[4];
+
 
       
     document.getElementById("id").innerHTML =  id;
@@ -154,9 +149,20 @@
     document.getElementById("currPlace").innerHTML =  currentPlace;
     
     document.getElementById("county").innerHTML =  county;
+      
+   
+    
 
+      
     }
 
+    function sendDetails() 
+    {
+
+    var qs = "?stud=" + data;
+    window.location.href="EditStudentDetails.html" + qs;
+    
+  }
 </script>
 </body>
 </html>
