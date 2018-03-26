@@ -68,7 +68,7 @@ function createWindow () {
 
   // and load the main html page of the app.
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'pages/assign.html'),
+    pathname: path.join(__dirname, 'pages/studentlist.html'),
     protocol: 'file:',
     slashes: true
   }))
@@ -302,7 +302,6 @@ function removeStudent(jsonData, number){
 }
 
 function addPreviousPlacements(){
-
   for(i=0; i<previousPlaceJson.length;i++){
     for(j=0; j<studentJson.length;j++){
       if(previousPlaceJson[i]["Student Number"] == studentJson[j]["Number"])
@@ -339,29 +338,31 @@ ipcMain.on('getStudentData',function(){
 })
 
 //assignStudent(studentJson, placementJson, previousPlaceJson, dublinNorth, dublinSouth);
-
-function assignStudent(studentJson, placementJson, previousPlaceJson, dublinNorth)
-{
-// Assigning fourth years first which have a "Perfect match"
-for(i=0; i<studentJson.length; i++)         //Looping through students
-{
-  for(j=0; j<placementJson.length ; j++)    //Looping through placements
+function assignAll(){
+  function assignStudent(studentJson, placementJson, previousPlaceJson, dublinNorth)
   {
-    var previousExperience = false;
- 
-      if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
-        previousExperience = true;
-      
-      if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
-        previousExperience = true;
+  console.log("called");
+  // Assigning fourth years first which have a "Perfect match"
+  for(i=0; i<studentJson.length; i++)         //Looping through students
+  {
+    for(j=0; j<placementJson.length ; j++)    //Looping through placements
+    {
+      var previousExperience = false;
+  
+        if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+          previousExperience = true;
+        
+        if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+          previousExperience = true;
 
-      if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
-        previousExperience = true;
+        if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
 
-    if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 && 
-    studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County &&
-     placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
-      studentAllocation(studentJson, placementJson);
+      if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 && 
+      studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County &&
+      placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
+        studentAllocation(studentJson, placementJson);
+    }
   }
 }
 //Finding fourth years without perfect location, but finding North / South

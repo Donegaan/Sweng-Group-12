@@ -19,7 +19,7 @@
   <title>Student List</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans" />
-
+  <script src ="../main.js"></script>
   <script>
     window.jQuery = window.$ = require('jquery');
   </script>
@@ -32,9 +32,9 @@
 
 <body>
   <div class="sidenav">
-    <a href="assign.html">Assign</a>
     <a href="studentlist.html" class="active">Student List</a>
     <a href="workplacelist.html">Workplace List</a>
+    <button id = "assignbutton" onClick="assignAll()" >Assign</button>
   </div>
 
   <div class="main">
@@ -87,13 +87,6 @@
       });
     });
   });
-
-
-  document.querySelector('#btnEd').addEventListener('click', editDetails);
-
-  function editDetails() {
-    console.log("EDIT STUDENTS HAS BEEN CALLED");
-  }
 
   function searchTable() {
     var input, filter, table, tr, td, i;
