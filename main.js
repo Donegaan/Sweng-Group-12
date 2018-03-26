@@ -207,7 +207,7 @@ function addPlacement(placementJson, id, location, county, numPlacements) {
 function editPlacement() {
 
   var placementId = document.getElementById("id").value;
-
+  var placementJson = getPlacementData();
   for (var i = 0; i < placementJson.length; i++) {
     if (placementJson[i].ID == placmentId) {
       placementJson[i].Location = document.getElementById("location").value;
