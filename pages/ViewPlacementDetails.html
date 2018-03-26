@@ -39,7 +39,7 @@
 </style>
 
 <a href="EditPlacementDetails.html">
-<button  class="btn" type="button" id="editPlacement"><i class="fa fa-edit" ></i> Edit</button>
+<button  class="editBtn" type="button" id="editPlacement"><i class="fa fa-edit" ></i> Edit</button>
 </a>
 <!--
 <button class="btn" id="">
@@ -56,10 +56,10 @@
     <th>Places</th>
   </tr>
   <tr>
-    <td>90</td>
-    <td>Some Place</td>
-    <td>D12</td>
-    <td>3</td>
+    <td id = "id"></td>
+    <td id = "county"></td>
+    <td id = "loc"></td>
+    <td id = "place"></td>
 
   </tr>
 </table>
@@ -85,6 +85,41 @@ function receiveWorkplace(){
   var student = decodeURIComponent(window.location.search);
   student=student.substring(1);
   console.log(student);
+    
+    
+    var newString = student.replace("pl=<td>", "");
+    var newString1 = newString.replace("</td><td>", " ");  
+   
+    var newString2 = newString1;
+      
+      for (i = 0; i < 7; i++) { 
+          
+        newString2 = newString2.replace("</td><td>", " ");  
+      }   
+   
+      
+    const splitString = newString2.split(" ");
+    
+
+      
+    var stuId = "90"//splitString[0];
+    var county = "Dublin"//splitString[1] + " " + splitString[2];
+    var location = "D12"//splitString[3];
+    var places = "0"//splitString[4];
+
+    
+
+      
+    document.getElementById("id").innerHTML =  stuId;
+   
+    document.getElementById("county").innerHTML =  county;
+    
+    document.getElementById("loc").innerHTML =  location;
+    
+    document.getElementById("place").innerHTML =  places;
+    
+
+
   }
 </script>
 </div>

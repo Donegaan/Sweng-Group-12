@@ -38,7 +38,7 @@
 </style>
 
 <a href="EditStudentDetails.html">
-<button  class="btn" type="button" id="editPlacement"><i class="fa fa-edit" ></i>Edit</button>
+<button  class="editBtn" type="button" id="editPlacement"><i class="fa fa-edit" ></i>Edit</button>
 </a>
 
 
@@ -118,14 +118,31 @@
     var student = decodeURIComponent(window.location.search);
     student=student.substring(1);
     console.log(student);
-
-    var id = "12345";
-    var name = "Sarah Jones";
-    var year = "3";
-    var studentlocation = "D1";
-    var currentPlace = "90";
-    var county = "Dublin";
+      
+    var newString = student.replace("stud=<td>", "");
+    var newString1 = newString.replace("</td><td>", " ");  
+   
+    var newString2 = newString1;
+      
+      for (i = 0; i < 7; i++) { 
+          
+        newString2 = newString2.replace("</td><td>", " ");  
+      }   
+   
+      
+    const splitString = newString2.split(" ");
     
+
+      
+    var id = splitString[0];
+    var name = splitString[1] + " " + splitString[2];
+    var year = splitString[3];
+    var studentlocation = splitString[4];
+    var currentPlace = splitString[6];
+    var county = splitString[5];
+    
+
+      
     document.getElementById("id").innerHTML =  id;
    
     document.getElementById("name").innerHTML =  name;
