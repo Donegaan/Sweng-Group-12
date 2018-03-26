@@ -42,21 +42,27 @@
 </a>
 
 
-<table id="student-details">
+<table id="student-list">
   <tr>
-    <th id ="name" value = "name" >Name</th>
-    <th id ="number" value = "value">Student Number</th>
-    <th id ="location" value = "location">Location</th>
-    <th id = "placement" value = "placement">Current Placement</th>
+    <th>Student Number</th>
+    <th>Name</th>
+    <th>Year</th>
+    <th>Location</th>
+    <th>Current Placement</th>
+    <th>County</th>
   </tr>
-  <!-- <tr>
-    <td>Sarah Jones</td>
-    <td>12345</td>
-    <td>D1</td>
-    <td>90</td>
-  </tr> -->
-
+   <tr>
+    <td id = "id"></td>
+    <td id = "name"></td>
+    <td id = "year"></td>
+    <td id = "location"></td>
+    <td id = "currPlace"></td>
+    <td id = "county"></td>
+  </tr> 
+    
+  
 </table>
+   
 
  <h2>Placement History</h2>
 
@@ -113,6 +119,24 @@
     student=student.substring(1);
     console.log(student);
 
+    var id = "12345";
+    var name = "Sarah Jones";
+    var year = "3";
+    var studentlocation = "D1";
+    var currentPlace = "90";
+    var county = "Dublin";
+    
+    document.getElementById("id").innerHTML =  id;
+   
+    document.getElementById("name").innerHTML =  name;
+    
+    document.getElementById("year").innerHTML =  year;
+    
+    document.getElementById("location").innerHTML =  studentlocation;
+    
+    document.getElementById("currPlace").innerHTML =  currentPlace;
+    
+    document.getElementById("county").innerHTML =  county;
 
     }
 

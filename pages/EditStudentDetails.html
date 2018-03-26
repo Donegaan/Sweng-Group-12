@@ -34,7 +34,7 @@
     <input type="text" id="currPlace" name="currPlace" value="90">
 <!--    <input type="submit" value="Save">-->
 
-    <a class="saveBtn" href="#popup1" onclick="editStudent()">
+    <a class="saveBtn" href="#popup1" onclick="check()">
         Save
     </a>
 
@@ -47,6 +47,59 @@
 </div>
 </div>
   </form>
+    <script>
+    function check()
+    {
+    var btn = document.getElementById("save");
+    var savePopup = document.getElementById("popup1");
+    
+        
+    var studentId = document.getElementById("id").value;
+    var studentName = document.getElementById("name").value;
+    
+    var studentYr = document.getElementById("year").value;
+    var studentLoc = document.getElementById("location").value;
+    var studentCounty = document.getElementById("county").value;
+    var curPlace = document.getElementById("currPlace").value;
+    
+    if(studentId == "")
+        {
+            alert("No id!");
+        }
+     else if(studentName == "")
+        {
+            alert("No name!");
+        }
+     else if(studentYr == "")
+        {
+            alert("No year!");
+        }
+     else if(studentCounty == "")
+        {
+            alert("No county!");
+        }
+     else if(studentLoc == "")
+        {
+            alert("No location!");
+        }
+     else if(curPlace == "")
+        {
+            alert("No placement!");
+        }
+    else
+    {
+        
+        
+    btn.onclick = function() {
+    savePopup.style.display = "block";
+}
+        editStudent();
+        
+        
+    }
+    }
+
+    </script>
   <script type ="text/javascript" src="../main.js">
   </script>
 </div>
