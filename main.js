@@ -342,7 +342,6 @@ ipcMain.on('getStudentData',function(){
 function assignAll(){
   function assignStudent(studentJson, placementJson, previousPlaceJson, dublinNorth)
   {
-<<<<<<< HEAD
   console.log("called");
   // Assigning fourth years first which have a "Perfect match"
   for(i=0; i<studentJson.length; i++)         //Looping through students
@@ -365,23 +364,6 @@ function assignAll(){
       placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
         studentAllocation(studentJson, placementJson);
     }
-=======
-    var previousExperience = false;
-
-      if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
-        previousExperience = true;
-
-      if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
-        previousExperience = true;
-
-      if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
-        previousExperience = true;
-
-    if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 &&
-    studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County &&
-     placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
-      studentAllocation(studentJson, placementJson);
->>>>>>> e155d2c1d6290e47b28537c5a3ce8a617daca11f
   }
 }
 
