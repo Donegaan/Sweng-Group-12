@@ -39,7 +39,7 @@
 </style>
 
 <a href="EditPlacementDetails.html">
-<button  class="editBtn" type="button" id="editPlacement"><i class="fa fa-edit" ></i> Edit</button>
+<button  class="editBtn" type="button" id="editPlacement" onclick = sendDetails()><i class="fa fa-edit" ></i> Edit</button>
 </a>
 <!--
 <button class="btn" id="">
@@ -47,19 +47,23 @@
 </button>
 -->
 
-
+<!--<textarea id = "sample"></textarea>-->
 <table>
   <tr>
     <th>ID</th>
-    <th>Name</th>
+    <th>Places Available</th>
     <th>Location</th>
-    <th>Places</th>
+    <th>County</th>
+    
+    
   </tr>
   <tr>
     <td id = "id"></td>
-    <td id = "county"></td>
-    <td id = "loc"></td>
     <td id = "place"></td>
+    <td id = "loc"></td>
+    <td id = "county"></td>
+    
+    
 
   </tr>
 </table>
@@ -80,46 +84,47 @@
 
 
 <script>
-
+ var data;
 function receiveWorkplace(){
-  var student = decodeURIComponent(window.location.search);
-  student=student.substring(1);
-  console.log(student);
+  var place = decodeURIComponent(window.location.search);
+  data = place;
+  place=place.substring(1);
+  console.log(place);
     
-    
-    var newString = student.replace("pl=<td>", "");
-    var newString1 = newString.replace("</td><td>", " ");  
-   
-    var newString2 = newString1;
-      
-      for (i = 0; i < 7; i++) { 
-          
-        newString2 = newString2.replace("</td><td>", " ");  
-      }   
+    var newString = place.replace("place=<td>", ""); 
    
       
-    const splitString = newString2.split(" ");
+    const splitString = newString.split("</td><td>");
+   
+
+    var whole = splitString;
+    
+    var placeId = splitString[0];
+    var county = splitString[3];
+    var location = splitString[2];
+    var places = splitString[1];
+
     
 
-      
-    var stuId = "90"//splitString[0];
-    var county = "Dublin"//splitString[1] + " " + splitString[2];
-    var location = "D12"//splitString[3];
-    var places = "0"//splitString[4];
-
     
-
-      
-    document.getElementById("id").innerHTML =  stuId;
+//    document.getElementById("sample").innerHTML = whole;
+    
+    document.getElementById("id").innerHTML =  placeId;
    
     document.getElementById("county").innerHTML =  county;
     
     document.getElementById("loc").innerHTML =  location;
     
     document.getElementById("place").innerHTML =  places;
+
+  }
     
-
-
+     function sendDetails() 
+    {
+        console.log(data);
+    var qs = "?place=" + data;
+    window.location.href="EditPlacementDetails.html" + qs;
+    
   }
 </script>
 </div>
