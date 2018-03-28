@@ -68,11 +68,49 @@
   </tr>
 </table>
 
-<div id="googleMap" style="width:100%;height:400px;"></div>
-<script>    
+<div id="mapCanvas" style="width:100%;height:400px;"></div>
+<script>
+    function initialize() {
+    var map;
+    var bounds = new google.maps.LatLngBounds();
+    var mapOptions = {
+        mapTypeId: 'roadmap'
+    };
+                    
+    // Display a map on the page
+    map = new google.maps.Map(document.getElementById("mapCanvas"), mapOptions);
+        
+    // Multiple Markers
+    var markers = [
+        ['London Eye, London', 51.503454,-0.119562],
+        ['Palace of Westminster, London', 51.499633,-0.124755]
+    ];
+                        
+    
+    // Loop through our array of markers & place each one on the map  
+    for( i = 0; i < markers.length; i++ ) {
+        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: markers[i][0]
+        });
+        map.fitBounds(bounds);
+    }
+
+    // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
+    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+        this.setZoom(14);
+        google.maps.event.removeListener(boundsListener);
+    });
+    
+}
+  </script>
+<!--<script>    
     var geocoder;
 	var map;
-	var Ireland = "Dublin";
+	var address = "Dublin";
 	function initialize() {
 		geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(53.3498,-6.2603);
@@ -81,34 +119,21 @@
 		  center: latlng
 		}
 		map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
-		codeAddress(Ireland);
+		codeAddress(address);
 	}
-	function codeAddress(address) 
-{
-  geocoder.geocode( {address:address}, function(results, status) 
-  {
-    if (status == google.maps.GeocoderStatus.OK) 
-    {
-      map.setCenter(results[0].geometry.location);
-      var marker = new google.maps.Marker(
-      {
-          map: map,
-          position: results[0].geometry.location
-      });
-    } else {
-      alert('Geocode was not successful for the following reason: ' + status);
-   }
+	function codeAddress(address) {
+	geocoder.geocode( {address:address}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+		  map.setCenter(results[0].geometry.location);
+		  var marker = new google.maps.Marker({
+			  map: map,
+			  position: results[0].geometry.location
+		  });
+		} else {
+		  alert('Geocode was not successful for the following reason: ' + status);
+	   }
   });
 }
-</script>
-<!--<script>
-	function myMap() {
-		var mapProp= new google.maps.LatLng(53.3498,-6.2603);
-		var mapOptions = {center: mapProp, zoom: 10};
-		var map=new google.maps.Map(document.getElementById("googleMap"),mapOptions);
-		var marker = new google.maps.Marker({position:mapProp});
-		marker.setMap(map);
-	}
 </script>-->
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGrIpLfAxR0NDgSODLhzH5f7I2bJgXdMs&callback=initialize"></script>
