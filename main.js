@@ -131,27 +131,6 @@ function getPrevPlacementData() {
 }
 //addPreviousPlacements();
 addProvinces();
-//Testing the add, edit and remove functions
-//studentJson = addStudent(studentJson, "00000", "Test Name","1", "D1", "000","Dublin");
-//
-//studentJson = removeStudent(studentJson,"00000")
-
-//placementJson = addPlacement(placementJson, "191","D1","Dublin","1");
-//placementJson = editPlacement(placementJson,"191","D3","Dublin","3");
-//placementJson = removePlacement(placementJson,"191");
-
-//jsonfile.writeFile('studentJson.json',studentJson, function(err){
-//  if(err)
-//    console.error(err)});
-
-// console.log(studentJson);
-
-//jsonfile.writeFile('placementJson.json',placementJson, function(err){
-//  if(err)
-//  console.error(err)});
-
-// console.log(placementJson);
-
 //json to csv
 
 function writeToStudentCsv(studentJson){
@@ -186,7 +165,7 @@ function addPlacement(placementJson, id, location, county, numPlacements){
 //Searches for placement by ID and edits according to new parameters
 function editPlacement(){
 
-  var placementId = document.getElementById("id").value;
+  var placementId = document.getElementById("id").innerHTML;
 
   for (var i=0; i<placementJson.length; i++){
     if(placementJson[i].ID ==placmentId){
@@ -273,7 +252,7 @@ function addProvinces(){
 */
 function editStudent() {
   console.log("edit called");
-  var studentNumber = document.getElementById("id").value;
+  var studentNumber = document.getElementById("id").innerHTML;
   // console.log(studentNumber+" Works");
   var studentJson = getStudentData();
   for (var i=0; i<studentJson.length; i++){
