@@ -71,7 +71,7 @@ function createWindow () {
     pathname: path.join(__dirname, 'pages/studentlist.html'),
     protocol: 'file:',
     slashes: true
-  }))
+  }));
 
 //  Open the DevTools.
   mainWindow.webContents.openDevTools()
@@ -118,13 +118,17 @@ var csvOptions = {
 //console.log(jsonData);
 
 //-------------------------Write to JSON ---------------------------------------
-function getStudentData(){
-  return csvjson.toObject(csvData,csvOptions);
+function getStudentData() {
+  return csvjson.toObject(csvData, csvOptions);
 }
-var studentJson = csvjson.toObject(csvData,csvOptions);
-var placementJson = csvjson.toObject(csvPlacement, csvOptions);
-var previousPlaceJson = csvjson.toObject(csvPrevPlace, csvOptions);
 
+function getPlacementData() {
+  return csvjson.toObject(csvPlacement, csvOptions);
+}
+
+function getPrevPlacementData() {
+  return csvjson.toObject(csvPrevPlace, csvOptions);
+}
 //addPreviousPlacements();
 addProvinces();
 //Testing the add, edit and remove functions
@@ -240,6 +244,7 @@ function addStudent(jsonData, number, name, year, location, allocatedPlacement,c
 }
 
 function addProvinces(){
+  var studentJson = getStudentData();
   for(i=0; i < studentJson.length; i++)
   {
     for(j=0; j < Leinster.length; j++){
@@ -330,199 +335,247 @@ function addPreviousPlacements(){
 //  console.log(studentJson);
 }
 
-ipcMain.on('getStudentData',function(){
-  // var studentJson = csvjson.toObject(csvData,csvOptions);
-  // for(var i=0;i<studentJson.length;i++){
-  //   console.log(studentJson[i].Number)
-  // }
-  mainWindow.webContents.send('studentData',studentJson);
-})
-
 //assignStudent(studentJson, placementJson, previousPlaceJson, dublinNorth, dublinSouth);
-function assignAll(){
-  function assignStudent(studentJson, placementJson, previousPlaceJson, dublinNorth)
-  {
-  console.log("called");
-  // Assigning fourth years first which have a "Perfect match"
-  for(i=0; i<studentJson.length; i++)         //Looping through students
-  {
-    for(j=0; j<placementJson.length ; j++)    //Looping through placements
+function assignAll() {
+  var studentJson = getStudentData();
+  var placementJson = getPlacementData();
+  var previousPlaceJson = getPrevPlacementData();
+  assignStudent();
+  function assignStudent() {
+    // Assigning fourth years first which have a "Perfect match"
+    for (i = 0; i < studentJson.length; i++) //Looping through students
     {
-      var previousExperience = false;
-  
-        if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
-          previousExperience = true;
-        
-        if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+      for (j = 0; j < placementJson.length; j++) //Looping through placements
+      {
+        var previousExperience = false;
+
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
           previousExperience = true;
 
-        if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
           previousExperience = true;
 
-      if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 && 
-      studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County &&
-      placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
-        studentAllocation(studentJson, placementJson);
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 &&
+          studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County &&
+          placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
+          studentAllocation(studentJson, placementJson,i,j);
+      }
+    }
+    //Finding fourth years without perfect location, but finding North / South
+
+    for (i = 0; i < studentJson.length; i++) //Looping through students
+    {
+      var studentNorth = false;
+      if (dublinNorth.includes(studentJson[i].Location))
+        studentNorth = true;
+
+      for (j = 0; j < placementJson.length; j++) //Looping through placements
+      {
+        var placementNorth = false;
+        if (dublinNorth.includes(placementJson[j].Location))
+          placementNorth = true;
+
+        var previousExperience = false;
+
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 &&
+          studentJson[i].Location != placementJson[j].Location && studentJson[i].County == placementJson[j].County &&
+          placementJson[j]["Number of Placements"] > 0 && previousExperience == false && studentNorth == placementNorth)
+          studentAllocation(studentJson, placementJson, i, j);
+      }
+    }
+
+    //Finding Fourth Years with Correct County but not specific location
+    for (i = 0; i < studentJson.length; i++) {
+      for (j = 0; j < placementJson.length; j++) {
+        var previousExperience = false;
+
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location != placementJson[j].Location &&
+          studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
+          studentAllocation(studentJson, placementJson, i, j);
+      }
+    }
+
+    //Assigning fourth years based on province
+    for (i = 0; i < studentJson.length; i++) {
+      for (j = 0; j < placementJson.length; j++) {
+        var previousExperience = false;
+
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location != placementJson[j].Location &&
+          studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false &&
+          studentJson[i].Province == placementJson[j].Province)
+          studentAllocation(studentJson, placementJson, i, j);
+      }
+    }
+
+    //Assigning remaining year groups with correct location
+    for (i = 0; i < studentJson.length; i++) {
+      for (j = 0; j < placementJson.length; j++) {
+        var previousExperience = false;
+
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+
+        if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location == placementJson[j].Location &&
+          studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
+          studentAllocation(studentJson, placementJson, i, j);
+      }
+    }
+
+    //Finding remaining years without perfect location, but finding North / South
+
+    for (i = 0; i < studentJson.length; i++) //Looping through students
+    {
+      var studentNorth = false;
+      if (dublinNorth.includes(studentJson[i].Location))
+        studentNorth = true;
+
+      for (j = 0; j < placementJson.length; j++) //Looping through placements
+      {
+        var placementNorth = false;
+        if (dublinNorth.includes(placementJson[j].Location))
+          placementNorth = true;
+
+        var previousExperience = false;
+
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
+          studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false &&
+          studentNorth == placementNorth)
+          studentAllocation(studentJson, placementJson, i, j);
+      }
+    }
+
+    //Remaining years, with correct county
+    for (i = 0; i < studentJson.length; i++) {
+      for (j = 0; j < placementJson.length; j++) {
+        var previousExperience = false;
+
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+
+        if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
+          studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
+          studentAllocation(studentJson, placementJson, i, j);
+      }
+    }
+
+    //Remaining students with correct province
+    for (i = 0; i < studentJson.length; i++) {
+      for (j = 0; j < placementJson.length; j++) {
+        var previousExperience = false;
+
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
+          studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false &&
+          studentJson[i].Province == placementJson[j].Province)
+          studentAllocation(studentJson, placementJson, i, j);
+      }
+    }
+
+    //Left over students
+    for (i = 0; i < studentJson.length; i++) {
+      for (j = 0; j < placementJson.length; j++) {
+        var previousExperience = false;
+
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+          previousExperience = true;
+
+        if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
+          studentJson[i].County != placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
+          studentAllocation(studentJson, placementJson, i, j);
+      }
     }
   }
-}
+  // displayStudents(studentJson, placementJson);
 
-//Finding Fourth Years with Correct County but not specific location
-for(i=0; i<studentJson.length; i++)
-{
-  for(j=0; j<placementJson.length ; j++)
-  {
-    var previousExperience = false;
 
-    if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location != placementJson[j].Location &&
-    studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
-      studentAllocation(studentJson, placementJson);
+  function studentAllocation(studentJson, placementJson, i, j) {
+    // console.log(placementJson);
+    studentJson[i]["Allocated Placement"] = placementJson[j].ID; //Assign placement ID to student Allocated placement
+    placementJson[j]["Number of Placements"] = placementJson[j]["Number of Placements"] - 1; //Decrement number of placements left at the location
+    writeToPlacementCsv(placementJson);
+    writeToStudentCsv(studentJson);
   }
-}
 
-//Assigning fourth years based on province
-for(i=0; i<studentJson.length; i++)
-{
-  for(j=0; j<placementJson.length ; j++)
+  function displayStudents(studentJson, placementJson) //To check via console if placement is successful
   {
-    var previousExperience = false;
+    // var studentJson = getStudentData();
+    // var placementJson = getPlacementData();
+    for (i = 0; i < studentJson.length; i++) {
 
-    if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location != placementJson[j].Location &&
-    studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false &&
-    studentJson[i].Province == placementJson[j].Province)
-      studentAllocation(studentJson, placementJson);
+      console.log("Number " + studentJson[i].Number.toString() + ".");
+      console.log("Name: " + studentJson[i].Name.toString() + ". ");
+      console.log("Location " + studentJson[i].Location.toString() + ".");
+      console.log("Student Year " + studentJson[i].Year.toString() + ".");
+      console.log("Student County " + studentJson[i].County.toString() + ".");
+      // console.log("Student Province " + studentJson[i].Province.toString() + ".");
+      console.log("Allocated Placement " + studentJson[i]["Allocated Placement"].toString() + "\n");
+    }
   }
-}
-
-//Assigning remaining year groups with correct location
-for( i=0; i<studentJson.length; i++)
-{
-  for( j=0; j<placementJson.length; j++)
-  {
-    var previousExperience = false;
-
-    if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-
-    if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location == placementJson[j].Location &&
-    studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
-      studentAllocation(studentJson, placementJson);
-  }
-}
-
-//Remaining years, with correct county
-for( i=0; i<studentJson.length; i++)
-{
-  for( j=0; j<placementJson.length; j++)
-  {
-    var previousExperience = false;
-
-    if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-
-    if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
-    studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
-      studentAllocation(studentJson, placementJson);
-  }
-}
-
-//Remaining students with correct province
-for(i=0; i<studentJson.length; i++)
-{
-  for(j=0; j<placementJson.length ; j++)
-  {
-    var previousExperience = false;
-
-      if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
-        previousExperience = true;
-
-      if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
-        previousExperience = true;
-
-      if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
-        previousExperience = true;
-
-    if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
-    studentJson[i].County == placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false &&
-    studentJson[i].Province == placementJson[j].Province)
-      studentAllocation(studentJson, placementJson);
-  }
-}
-
-//Left over students
-for( i=0; i<studentJson.length; i++)
-{
-  for( j=0; j<placementJson.length; j++)
-  {
-    var previousExperience = false;
-
-    if(previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
-    previousExperience = true;
-
-    if(studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
-    studentJson[i].County != placementJson[j].County && placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
-      studentAllocation(studentJson, placementJson);
-  }
-}
-
- displayStudents(studentJson, placementJson);
- }
-
-function studentAllocation(studentJson, placementJson)
-{
-  studentJson[i]["Allocated Placement"] = placementJson[j].ID;      //Assign placement ID to student Allocated placement
-  placementJson[j]["Number of Placements"] = placementJson[j]["Number of Placements"] -1; //Decrement number of placements left at the location
-}
-
-function displayStudents(studentJson, placementJson)  //To check via console if placement is successful
-{
- for(i =0; i<studentJson.length; i++)
- {
-
- console.log( "Number " + studentJson[i].Number.toString() + "." );
- console.log( "Name: " + studentJson[i].Name.toString() + ". " );
- console.log( "Location " + studentJson[i].Location.toString() + "." );
- console.log( "Student Year " + studentJson[i].Year.toString() + "." );
- console.log( "Student County " + studentJson[i].County.toString() + "." );
- console.log( "Student Province " + studentJson[i].Province.toString() + "." );
- console.log( "Allocated Placement " + studentJson[i]["Allocated Placement"].toString() + "\n" );
- }
 }
