@@ -164,14 +164,14 @@ function addPlacement(placementJson, id, location, county, numPlacements){
 }
 //Searches for placement by ID and edits according to new parameters
 function editPlacement(){
-
+  var placementJson=getPlacementData();
   var placementId = document.getElementById("id").innerHTML;
 
   for (var i=0; i<placementJson.length; i++){
-    if(placementJson[i].ID ==placmentId){
+    if(placementJson[i].ID ==placementId){
       placementJson[i].Location = document.getElementById("location").value;
-      placementJson[i].County = doucument.getElementById("county").value;
-        if(placementJson[i].County = "Dublin")
+      placementJson[i].County = document.getElementById("county").value;
+        if(placementJson[i].County = "Dublin");
         {
           if(dublinNorth.hasKnownValue)
             placementJson[i].DublinPostCode = "Dublin North";
@@ -184,7 +184,7 @@ function editPlacement(){
     else if(i==placementJson.length-1)
       console.log("Placement doesnt exist");
   }
-  writeToPlacementCsv();
+  writeToPlacementCsv(placementJson);
   jsonfile.writeFile('placementJson.json',placementJson, function(err){
   if(err) console.error(err)});
 }
