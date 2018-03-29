@@ -1,11 +1,11 @@
 /*--------------------------
         Boilerplate from: https://github.com/electron/electron-quick-start
  -------------------------*/
+// Github repo: https://github.com/Donegaan/Sweng-Group-12
 
-
-const electron = require('electron')
+const electron = require('electron');
 // Module to control application life.
-const app = electron.app
+const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 var {ipcMain} = require('electron')
@@ -40,7 +40,7 @@ try{
   }
 }
 try{
-  var csvPrevPlace = fs.readFileSync(path.join(__dirname, 'Previous Placements.csv'),{ encoding : 'utf8'});
+  var csvPrevPlace = fs.readFileSync(path.join('Previous Placements.csv'),{ encoding : 'utf8'});
 }catch (err){
   if (err.code === 'ENOENT') {
     console.log('File not found!');
