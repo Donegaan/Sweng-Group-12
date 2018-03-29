@@ -22,31 +22,6 @@ h2, form,p{
 input{
     padding-left: 20px;
 }
-.sidenav button{
-    background-color: dodgerblue;
-    position: fixed;
-    bottom: 0;
-    border: none;
-    color: white;
-    padding: 15px 76px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-.sidenav button:hover{
-    background-color: royalblue;
-    position: fixed;
-    bottom: 0;
-    border: none;
-    color: white;
-    padding: 15px 76px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-
 .sidenav a {
     padding: 20px 20px 20px 20px;
     text-decoration: none;
@@ -61,7 +36,7 @@ input{
 }
 
 .sidenav a.active{
-     background-color:  dodgerblue;
+     background-color:  royalblue;
     color: white;
 }
 
@@ -70,21 +45,6 @@ input{
 
 }
 
-.editBtn {
-    position: relative;
-    bottom: 60px;
-    float: right;
-    background-color: DodgerBlue;
-    border: none;
-    color: white;
-    padding: 12px 16px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.editBtn:hover {
-    background-color: RoyalBlue;
-}
 .btn {
     position: relative;
     bottom: 60px;
