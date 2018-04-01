@@ -8,7 +8,7 @@
 </head>
 <body onload="receivePlacement()">
 <div class="sidenav">
-    <a href="ViewWorkplaceDetails.html">Back</a>
+    <a href="ViewPlacementDetails.html">Back</a>
 
 
 </div>
@@ -16,10 +16,12 @@
 <div class="main">
   <h2>Edit Placement Details</h2>
     <p>Placement Number: <b id ="id"></b></p>
-    
+
 <div class="container">
   <form action="saved.html" onsubmit="go()">
 <!--    <input type="text" id="id" name="id" value="90">-->
+    <lavbel for="name">Name</label>
+    <input type="text" id= "name" name ="name" value = "">
     <label for="location">Location</label>
     <input type="text" id="location" name="location"value="">
     <label for= "county">County</label>
@@ -27,8 +29,8 @@
       <label for="places">Total Places</label>
     <input type="text" id="places" name="places" value="">
 <!--    <input type="submit" value="Save">-->
-      
-      
+
+
       <a class="saveBtn"  onclick="check()">
         Save
     </a>
@@ -42,36 +44,38 @@
 </div>
 </div>
   </form>
-    
-    
+
+
     <script>
     function receivePlacement(){
     var placement = decodeURIComponent(window.location.search);
-    
+
     placement=placement.substring(1);
-        
+
     var newString = placement.replace("place=?place=<td>", "");
 
     var splitString = newString.split("</td><td>");
 
-    document.getElementById("id").innerHTML =  splitString[0];  
-    document.getElementById("location").value =  splitString[2];  
+    document.getElementById("id").innerHTML =  splitString[0];
+    document.getElementById("location").value =  splitString[2];
     document.getElementById("places").value =  splitString[1];
-    document.getElementById("county").value =  splitString[3].replace("</td>","");
+    document.getElementById("county").value =  splitString[3]
+    document.getElementById("name").value = splitString[4].replace("</td>","");
     }
-        
+
     function check()
     {
 //    var btn = document.getElementById("save");
 //    var savePopup = document.getElementById("popup1");
-//    
-        
-   
+//
+
+
     var id = document.getElementById("id").innerHTML;
     var loc = document.getElementById("location").value;
     var county = document.getElementById("county").value;
     var placesLeft = document.getElementById("places").value;
-    
+    var name = document.getElementById("name").value;
+
 
      if(loc == "")
         {
@@ -85,20 +89,24 @@
         {
             alert("No Place Numbers!");
         }
+    else if(name == "")
+    {
+      alert("No name!");
+    }
     else
     {
-        
+
         alert("Changes Saved");
 //    btn.onclick = function() {
 //    savePopup.style.display = "block";
 //}
         editPlacement();
-       
+
     }
-    
+
 }
     </script>
-    
+
   <script type="text/javascript" src="../main.js">
   </script>
 </div>

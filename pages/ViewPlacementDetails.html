@@ -53,6 +53,7 @@
         <table>
             <tr>
                 <th>ID</th>
+                <th>Name</th>
                 <th>Places Available</th>
                 <th>Location</th>
                 <th>County</th>
@@ -61,6 +62,7 @@
             </tr>
             <tr>
                 <td id="id"></td>
+                <td id="name"></td>
                 <td id="place"></td>
                 <td id="loc"></td>
                 <td id="county"></td>
@@ -78,18 +80,18 @@
     var mapOptions = {
         mapTypeId: 'roadmap'
     };
-    var geocoder = new google.maps.Geocoder();            
+    var geocoder = new google.maps.Geocoder();
     // Display a map on the page
     map = new google.maps.Map(document.getElementById("mapCanvas"), mapOptions);
-        
+
     // Multiple Markers
     var markers = [
         ['London Eye, London', 51.503454,-0.119562],
         ['Palace of Westminster, London', 51.499633,-0.124755]
     ];
-                        
-    
-    // Loop through our array of markers & place each one on the map  
+
+
+    // Loop through our array of markers & place each one on the map
     for( i = 0; i < markers.length; i++ ) {
         var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
         bounds.extend(position);
@@ -106,7 +108,7 @@
         this.setZoom(14);
         google.maps.event.removeListener(boundsListener);
     });
-    
+
 }
   </script> -->
         <script>
@@ -162,6 +164,7 @@
                 var whole = splitString;
 
                 var placeId = splitString[0];
+                var name = splitString[4]
                 var county = splitString[3];
                 var location = splitString[2];
                 var places = splitString[1];
@@ -178,6 +181,8 @@
                 document.getElementById("loc").innerHTML = location;
 
                 document.getElementById("place").innerHTML = places;
+
+                document.getElementById("name").innerHTML = name;
 
             }
 

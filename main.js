@@ -146,7 +146,7 @@ function writeToStudentCsv(studentJson){
   fs.writeFileSync(file,csvData,'utf8', null);
 }
 function writeToPlacementCsv(placementJson){
-  var columnHeaderArray=["ID","Number of Placements","Location","County"];
+  var columnHeaderArray=["id","Number of Placements","Location","County","Name"];
   csvPlacement = jsonToCsv.convertArrayOfObjects(placementJson, columnHeaderArray);
   csvPlacement = csvPlacement.replace(/"/g, '');
   var file ='Placements.csv'
@@ -157,12 +157,12 @@ function writeToPlacementCsv(placementJson){
 function addPlacement(placementJson, id, location, county, numPlacements){
 
   for(var i=0; i<placementJson.length; i++){
-    if(placementJson[i].ID ==id){
+    if(placementJson[i].id ==id){
       return placementJson;
     }
 
   }
-  var newPlacementInfo = {"ID" : id,
+  var newPlacementInfo = {"id" : id,
                           "Location" : location,
                           "County" : county,
                           "Number of Placements" : numPlacements};
@@ -170,15 +170,16 @@ function addPlacement(placementJson, id, location, county, numPlacements){
   placementJson.push(newPlacementInfo);
   return placementJson;
 }
-//Searches for placement by ID and edits according to new parameters
+//Searches for placement by id and edits according to new parameters
 function editPlacement(){
   var placementJson=getPlacementData();
   var placementId = document.getElementById("id").innerHTML;
 
   for (var i=0; i<placementJson.length; i++){
-    if(placementJson[i].ID ==placementId){
+    if(placementJson[i].id ==placementId){
       placementJson[i].Location = document.getElementById("location").value;
       placementJson[i].County = document.getElementById("county").value;
+      placementJson[i].Name = document.getElementById("name").value;
         if(placementJson[i].County === "Dublin")
         {
           if(dublinNorth.hasKnownValue)
@@ -196,11 +197,11 @@ function editPlacement(){
   jsonfile.writeFile('placementJson.json',placementJson, function(err){
   if(err) console.error(err);});
 }
-//Removes a placement based on ID
+//Removes a placement based on id
 function removePlacement(placementJson, id){
 
   for (var i=0; i<placementJson.length;i++){
-    if(placementJson[i].ID == id){
+    if(placementJson[i].id == id){
       placementJson.splice(i,1);
     }
   }
@@ -337,13 +338,13 @@ function assignAll() {
       {
         var previousExperience = false;
 
-        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].id)
           previousExperience = true;
 
         if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 &&
@@ -368,13 +369,13 @@ function assignAll() {
 
         var previousExperience = false;
 
-        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].id)
           previousExperience = true;
 
         if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 &&
@@ -389,13 +390,13 @@ function assignAll() {
       for (j = 0; j < placementJson.length; j++) {
         var previousExperience = false;
 
-        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].id)
           previousExperience = true;
 
         if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location != placementJson[j].Location &&
@@ -409,13 +410,13 @@ function assignAll() {
       for (j = 0; j < placementJson.length; j++) {
         var previousExperience = false;
 
-        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].id)
           previousExperience = true;
 
         if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 && studentJson[i].Location != placementJson[j].Location &&
@@ -430,13 +431,13 @@ function assignAll() {
       for (j = 0; j < placementJson.length; j++) {
         var previousExperience = false;
 
-        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].id)
           previousExperience = true;
 
 
@@ -462,13 +463,13 @@ function assignAll() {
 
         var previousExperience = false;
 
-        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].id)
           previousExperience = true;
 
         if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
@@ -483,13 +484,13 @@ function assignAll() {
       for (j = 0; j < placementJson.length; j++) {
         var previousExperience = false;
 
-        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].id)
           previousExperience = true;
 
 
@@ -504,13 +505,13 @@ function assignAll() {
       for (j = 0; j < placementJson.length; j++) {
         var previousExperience = false;
 
-        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].id)
           previousExperience = true;
 
         if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
@@ -525,13 +526,13 @@ function assignAll() {
       for (j = 0; j < placementJson.length; j++) {
         var previousExperience = false;
 
-        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 1 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 2 ID"] == placementJson[j].id)
           previousExperience = true;
 
-        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].ID)
+        if (previousPlaceJson[i]["Placement 3 ID"] == placementJson[j].id)
           previousExperience = true;
 
         if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Location != placementJson[j].Location &&
@@ -545,7 +546,7 @@ function assignAll() {
 
   function studentAllocation(studentJson, placementJson, i, j) {
     // console.log(placementJson);
-    studentJson[i]["Allocated Placement"] = placementJson[j].ID; //Assign placement ID to student Allocated placement
+    studentJson[i]["Allocated Placement"] = placementJson[j].id; //Assign placement id to student Allocated placement
     placementJson[j]["Number of Placements"] = placementJson[j]["Number of Placements"] - 1; //Decrement number of placements left at the location
     writeToPlacementCsv(placementJson);
     writeToStudentCsv(studentJson);

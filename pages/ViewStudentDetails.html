@@ -41,7 +41,7 @@
 </a>
 
 
-    
+
 <table id="student-list">
   <tr>
     <th>Student Number</th>
@@ -58,109 +58,154 @@
     <td id = "location"></td>
     <td id = "currPlace"></td>
     <td id = "county"></td>
-  </tr> 
-    
-  
+  </tr>
+
+
 </table>
-   
+
 
  <h2>Placement History</h2>
 
 <!--    <div style="overflow-y: auto;">   -->
 
-    <table>
+    <table id ="history">
       <tr>
         <th>ID</th>
         <th>Name</th>
         <th>Location</th>
-      </tr>
-      <tr>
-        <td>90</td>
-        <td>Some Place</td>
-        <td>D1</td>
-      </tr>
-      <tr>
-        <td>901</td>
-        <td>Some Place</td>
-        <td>D2</td>
-      </tr>
-      <tr>
-        <td>902</td>
-        <td>Some Place</td>
-        <td>D3</td>
-      </tr>
-      <tr>
-        <td>903</td>
-        <td>Some Place</td>
-        <td>D1</td>
-      </tr>
-      <tr>
-        <td>904</td>
-        <td>Some Place</td>
-        <td>D4</td>
-      </tr>
-      <tr>
-        <td>905</td>
-        <td>Some Place</td>
-        <td>D1</td>
-      </tr>
-      <tr>
-        <td>906</td>
-        <td>Some Place</td>
-        <td>D15</td>
-      </tr>
     </table>
 <!--    </div>   -->
 
 </div>
+<script type="text/javascript" src="../main.js"></script>
 <script>
     var data;
+    var id;
+    var studentInfo;
+    var prevPlacement;
   function receiveStudent(){
     var student = decodeURIComponent(window.location.search);
     data = student;
     student=student.substring(1);
-    console.log(student);
-      
-    var newString = student.replace("stud=<td>", ""); 
-   
-      
+
+    var newString = student.replace("stud=<td>", "");
+
+
     const splitString = newString.split("</td><td>");
-    
-
-      
-    var id = splitString[0];
-    var name = splitString[1] 
-    var year = splitString[2];
-    var studentlocation = splitString[3];
-    var currentPlace = splitString[5];
-    var county = splitString[4];
 
 
-      
-    document.getElementById("id").innerHTML =  id;
-   
-    document.getElementById("name").innerHTML =  name;
-    
-    document.getElementById("year").innerHTML =  year;
-    
-    document.getElementById("location").innerHTML =  studentlocation;
-    
-    document.getElementById("currPlace").innerHTML =  currentPlace;
-    
-    document.getElementById("county").innerHTML =  county;
-      
-   
-    
 
-      
+    id = splitString[0];
+    // var name = splitString[1]
+    // var year = splitString[2];
+    // var studentlocation = splitString[3];
+    // var currentPlace = splitString[5];
+    // var county = splitString[4];
+
+    console.log(id);
+
+    //Getting the specific students info;
+    var students = getStudentData();
+
+    for(i=0;i<students.length;i++)
+    {
+      if (students[i]["Number"] === id){
+        studentInfo = students[i];
+        break;
+      }
+    }
+    //Loading their previous placements
+    var pastPlacementsList = getPrevPlacementData();
+
+    for(i=0;i<pastPlacementsList.length;i++)
+    {
+        if(pastPlacementsList[i]["Student Number"] === id){
+          prevPlacement = pastPlacementsList[i];
+
+        }
     }
 
-    function sendDetails() 
+    document.getElementById("id").innerHTML =  id;
+
+    document.getElementById("name").innerHTML =  studentInfo["Name"];
+
+    document.getElementById("year").innerHTML =  studentInfo["Year"];
+
+    document.getElementById("location").innerHTML =  studentInfo["Location"];
+
+    document.getElementById("currPlace").innerHTML =  studentInfo["Allocated Placement"];
+
+    document.getElementById("county").innerHTML =  studentInfo["County"];
+
+
+
+
+      createTable();
+    }
+    function createTable(){
+
+      //Getting the relevant data for our table
+
+      var placements = getPlacementData();
+
+      var ids = [prevPlacement["Placement 1 ID"], prevPlacement["Placement 2 ID"], prevPlacement["Placement 3 ID"]];
+
+      var pastPlacementWithInfo=[];
+      for(i=0;i<placements.length;i++){
+        if(placements[i]["id"]===ids[0]||
+          placements[i]["id"]===ids[1]||
+          placements[i]["id"]===ids[2]){
+
+          pastPlacementWithInfo.push(placements[i]);
+        }
+      }
+
+      var table = document.getElementById("history");
+      var tableBody = document.createElement("tbody");
+
+
+      //Creating table rows
+
+      for(r=0; r<pastPlacementWithInfo.length; r++){
+        var row = document.createElement("tr");
+
+
+        //Repeatedly create the data for the cells for each row
+        var cell = document.createElement("td");
+        var text = pastPlacementWithInfo[r]["id"];
+        var celltext = document.createTextNode(text);
+        cell.appendChild(celltext);
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+
+        cell = document.createElement("td");
+        text = pastPlacementWithInfo[r]["Name"];
+        celltext = document.createTextNode(text);
+        cell.appendChild(celltext);
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+
+        cell = document.createElement("td");
+        text = pastPlacementWithInfo[r]["Location"];
+        celltext = document.createTextNode(text);
+        cell.appendChild(celltext);
+        row.appendChild(cell);
+        table.appendChild(row);
+      }
+
+
+      //table.appendChild(tableBody);
+
+
+
+    }
+
+    function sendDetails()
     {
 
     var qs = "?stud=" + data;
     window.location.href="EditStudentDetails.html" + qs;
-    
+
   }
 </script>
 </body>
