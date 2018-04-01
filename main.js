@@ -149,7 +149,7 @@ function writeToPlacementCsv(placementJson){
   var columnHeaderArray=["id","Number of Placements","Location","County","Name"];
   csvPlacement = jsonToCsv.convertArrayOfObjects(placementJson, columnHeaderArray);
   csvPlacement = csvPlacement.replace(/"/g, '');
-  var file ='Placements.csv'
+  var file ='Placements.csv';
   // var file = path.join(process.resourcesPath,'/app/Placements.csv'); // Path for packaged app
   fs.writeFileSync(file,csvPlacement, 'utf8', null);
 }
@@ -194,8 +194,6 @@ function editPlacement(){
       console.log("Placement doesnt exist");
   }
   writeToPlacementCsv(placementJson);
-  jsonfile.writeFile('placementJson.json',placementJson, function(err){
-  if(err) console.error(err);});
 }
 //Removes a placement based on id
 function removePlacement(placementJson, id){
@@ -206,8 +204,6 @@ function removePlacement(placementJson, id){
     }
   }
   return placementJson;
-
-
 }
 /*
     Adds a new student to the JSON object
@@ -278,10 +274,6 @@ function editStudent() {
   }
   //Writing to the json and the csv
   writeToStudentCsv(studentJson);
-  jsonfile.writeFile('studentJson.json',studentJson, function(err){
-    if(err) console.error(err);
-  });
-  // return jsonData;
 }
 /*
   Removes a student from the list based on their student number.
