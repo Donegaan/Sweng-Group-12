@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 id,Number of Placements,Location,County,Name
 90,3,D12,Dublin,Funtimes
 123,0,D1,Dublin,Home from Home
@@ -17,23 +16,3 @@ id,Number of Placements,Location,County,Name
 901,0,D5,Dublin,Sutton Little People
 501,1,D9,Dublin,The Learning Circle
 191,3,D3,Dublin,Kid's Biz
-=======
-ID,Number of Placements,Location,County
-90,3,D12,Dublin
-123,1,D1,Dublin
-156,0,NAAS,Kildare
-649,0,D16,Dublin
-156,0,Naas,Kildare
-649,0,Galway,Galway
-372,0,D24,Dublin
-735,0,D2,Dublin
-56,0,D1,Dublin
-895,0,D6,Dublin
-675,0,D4,Dublin
-309,0,D11,Dublin
-497,0,D17,Dublin
-267,0,D22,Dublin
-901,0,D5,Dublin
-501,1,D9,Dublin
-191,3,D3,Dublin
->>>>>>> 46fbcda3a07f0a9f96ac9d8300d09c33edda9821
