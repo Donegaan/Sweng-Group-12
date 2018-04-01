@@ -2,6 +2,7 @@
         Boilerplate from: https://github.com/electron/electron-quick-start
  -------------------------*/
 // Github repo: https://github.com/Donegaan/Sweng-Group-12
+// process.resourcesPath needed for package app
 
 const electron = require('electron');
 // Module to control application life.
@@ -140,13 +141,17 @@ function writeToStudentCsv(studentJson){
   var columnHeaderArray=["Number","Name","Year", "Location","County", "Allocated Placement"];
   csvData = jsonToCsv.convertArrayOfObjects(studentJson, columnHeaderArray);
   csvData = csvData.replace(/"/g, '');
-  fs.writeFile('Students.csv',csvData,'utf8', null);
+  var file='Students.csv';
+  // var file = path.join(process.resourcesPath,'/app/Students.csv'); // Path for packaged app
+  fs.writeFileSync(file,csvData,'utf8', null);
 }
 function writeToPlacementCsv(placementJson){
   var columnHeaderArray=["ID","Number of Placements","Location","County"];
   csvPlacement = jsonToCsv.convertArrayOfObjects(placementJson, columnHeaderArray);
   csvPlacement = csvPlacement.replace(/"/g, '');
-  fs.writeFile('Placements.csv',csvPlacement, 'utf8', null);
+  var file ='Placements.csv'
+  // var file = path.join(process.resourcesPath,'/app/Placements.csv'); // Path for packaged app
+  fs.writeFileSync(file,csvPlacement, 'utf8', null);
 }
 //Adds a new placement to the list
 function addPlacement(placementJson, id, location, county, numPlacements){

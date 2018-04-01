@@ -5,11 +5,10 @@ Repo for Allocation system for Students going on work placements
 npm install
 # Run the app
 npm start
-
-#Pacakage the app
+# Package the app
 npm run build
 
-# Documentation:
+# Documentation
 Csv to JSON: https://www.npmjs.com/package/csvjson
 
 Json to CSv https://www.npmjs.com/package/convert-json-to-csv
