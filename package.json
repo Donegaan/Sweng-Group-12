@@ -4,7 +4,8 @@
   "description": "Allocation system for Students going on work placements",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager . StudentAllocator"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,8 @@
   },
   "homepage": "https://github.com/Donegaan/Sweng-Group-12#readme",
   "devDependencies": {
-    "electron": "^1.7.12"
+    "electron": "^1.7.12",
+    "electron-packager": "^11.2.0"
   },
   "dependencies": {
     "convert-json-to-csv": "^1.0.0",

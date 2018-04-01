@@ -7,8 +7,8 @@ const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
-var {ipcMain} = require('electron')
+const BrowserWindow = electron.BrowserWindow;
+
 
 const path = require('path');
 const url = require('url');
@@ -20,7 +20,7 @@ var jsonToCsv = require('convert-json-to-csv');
 
 // Read in files
 try{
-  var csvData = fs.readFileSync(path.join('Students.csv'), { encoding : 'utf8'}); // Read in csv file
+  var csvData = fs.readFileSync(path.join('./Students.csv'), { encoding : 'utf8'}); // Read in csv file
 }catch (err){
   if (err.code === 'ENOENT') {
     console.log('File not found!');
@@ -31,7 +31,7 @@ try{
 }
 
 try{
-  var csvPlacement = fs.readFileSync(path.join('Placements.csv'),{ encoding : 'utf8'});
+  var csvPlacement = fs.readFileSync(path.join('./Placements.csv'),{ encoding : 'utf8'});
 }catch (err){
   if (err.code === 'ENOENT') {
     console.log('File not found!');
@@ -40,7 +40,7 @@ try{
   }
 }
 try{
-  var csvPrevPlace = fs.readFileSync(path.join('Previous Placements.csv'),{ encoding : 'utf8'});
+  var csvPrevPlace = fs.readFileSync(path.join('./Previous Placements.csv'),{ encoding : 'utf8'});
 }catch (err){
   if (err.code === 'ENOENT') {
     console.log('File not found!');
@@ -171,7 +171,7 @@ function editPlacement(){
     if(placementJson[i].ID ==placementId){
       placementJson[i].Location = document.getElementById("location").value;
       placementJson[i].County = document.getElementById("county").value;
-        if(placementJson[i].County = "Dublin");
+        if(placementJson[i].County === "Dublin")
         {
           if(dublinNorth.hasKnownValue)
             placementJson[i].DublinPostCode = "Dublin North";
@@ -186,7 +186,7 @@ function editPlacement(){
   }
   writeToPlacementCsv(placementJson);
   jsonfile.writeFile('placementJson.json',placementJson, function(err){
-  if(err) console.error(err)});
+  if(err) console.error(err);});
 }
 //Removes a placement based on ID
 function removePlacement(placementJson, id){
@@ -270,7 +270,8 @@ function editStudent() {
   //Writing to the json and the csv
   writeToStudentCsv(studentJson);
   jsonfile.writeFile('studentJson.json',studentJson, function(err){
-    if(err) console.error(err)});
+    if(err) console.error(err);
+  });
   // return jsonData;
 }
 /*
@@ -283,7 +284,7 @@ function removeStudent(jsonData, number){
       jsonData.splice(i,1);
     }
   }
-  return jsonData
+  return jsonData;
 }
 
 function addPreviousPlacements(){
@@ -542,19 +543,4 @@ function assignAll() {
     writeToStudentCsv(studentJson);
   }
 
-  function displayStudents(studentJson, placementJson) //To check via console if placement is successful
-  {
-    // var studentJson = getStudentData();
-    // var placementJson = getPlacementData();
-    for (i = 0; i < studentJson.length; i++) {
-
-      console.log("Number " + studentJson[i].Number.toString() + ".");
-      console.log("Name: " + studentJson[i].Name.toString() + ". ");
-      console.log("Location " + studentJson[i].Location.toString() + ".");
-      console.log("Student Year " + studentJson[i].Year.toString() + ".");
-      console.log("Student County " + studentJson[i].County.toString() + ".");
-      // console.log("Student Province " + studentJson[i].Province.toString() + ".");
-      console.log("Allocated Placement " + studentJson[i]["Allocated Placement"].toString() + "\n");
-    }
-  }
 }
