@@ -20,30 +20,33 @@ var jsonToCsv = require('convert-json-to-csv');
 
 // Read in files
 try{
+  // var csvData = fs.readFileSync(path.join(process.resourcesPath,'app/Students.csv'), { encoding : 'utf8'}); // Read in csv file
   var csvData = fs.readFileSync(path.join('./Students.csv'), { encoding : 'utf8'}); // Read in csv file
 }catch (err){
   if (err.code === 'ENOENT') {
-    console.log('File not found!');
-    console.log('Path of file in parent dir:', require('path').resolve(__dirname, 'Students.csv'));
+    console.log('Student file not found!');
+    console.log('Path of file in parent dir:', require('path').resolve(process.resourcesPath, 'app/Students.csv'));
   } else {
     throw err;
   }
 }
 
 try{
+  // var csvPlacement = fs.readFileSync(path.join(process.resourcesPath,'app/Placements.csv'),{ encoding : 'utf8'});
   var csvPlacement = fs.readFileSync(path.join('./Placements.csv'),{ encoding : 'utf8'});
 }catch (err){
   if (err.code === 'ENOENT') {
-    console.log('File not found!');
+    console.log('Placement file not found!');
   } else {
     throw err;
   }
 }
 try{
+  // var csvPrevPlace = fs.readFileSync(path.join(process.resourcesPath,'app/Previous Placements.csv'),{ encoding : 'utf8'});
   var csvPrevPlace = fs.readFileSync(path.join('./Previous Placements.csv'),{ encoding : 'utf8'});
 }catch (err){
   if (err.code === 'ENOENT') {
-    console.log('File not found!');
+    console.log('Previous placement file not found!');
   } else {
     throw err;
   }
@@ -119,15 +122,15 @@ var csvOptions = {
 
 //-------------------------Write to JSON ---------------------------------------
 function getStudentData() {
-  return csvjson.toObject(csvData, csvOptions);
+  return csvjson.toObject(csvData, csvOptions); // Return student data json object
 }
 
 function getPlacementData() {
-  return csvjson.toObject(csvPlacement, csvOptions);
+  return csvjson.toObject(csvPlacement, csvOptions); // Return placement data json object
 }
 
 function getPrevPlacementData() {
-  return csvjson.toObject(csvPrevPlace, csvOptions);
+  return csvjson.toObject(csvPrevPlace, csvOptions); // Return previous placement data json object
 }
 //addPreviousPlacements();
 addProvinces();

@@ -6,6 +6,9 @@ npm install
 # Run the app
 npm start
 
+#Pacakage the app
+npm run build
+
 # Documentation:
 Csv to JSON: https://www.npmjs.com/package/csvjson
 
