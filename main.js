@@ -275,6 +275,7 @@ function editStudent() {
   var studentJson = getStudentData();
   var placementJson=getPlacementData();
   var available = true;
+  var count =0;
 
   for (var i=0; i<studentJson.length; i++){
 
@@ -285,7 +286,20 @@ function editStudent() {
         available = false;
         alert("Insufficient places");
       }
+
+      if(document.getElementById("currPlace").value == placementJson[j].id)
+      {
+        count++;
+      }
+
     }
+
+    if(count ==0)
+    {
+      available = false;
+      alert("This location does not exist");
+    }
+    
     if(document.getElementById("year").value < 0)
     {
       alert("Incorrect year input")
