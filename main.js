@@ -174,9 +174,15 @@ function addPlacement(placementJson, id, location, county, numPlacements){
 function editPlacement(){
   var placementJson=getPlacementData();
   var placementId = document.getElementById("id").innerHTML;
+  var available = true;
+
 
   for (var i=0; i<placementJson.length; i++){
-    if(placementJson[i].id ==placementId){
+
+    if(document.getElementById("places").value < 0)
+      available = false;
+
+    if(placementJson[i].id ==placementId && available == true){
       placementJson[i].Location = document.getElementById("location").value;
       placementJson[i].County = document.getElementById("county").value;
       placementJson[i].Name = document.getElementById("name").value;
@@ -190,6 +196,13 @@ function editPlacement(){
       placementJson[i]["Number of Placements"] = document.getElementById("places").value;
       console.log("works");
     }
+
+    if( available == false)
+  {
+      alert("Incorrect input");
+      return;
+  }
+
     else if(i==placementJson.length-1)
       console.log("Placement doesnt exist");
   }
@@ -260,8 +273,26 @@ function editStudent() {
   var studentNumber = document.getElementById("id").innerHTML;
   // console.log(studentNumber+" Works");
   var studentJson = getStudentData();
+  var placementJson=getPlacementData();
+  var available = true;
+
   for (var i=0; i<studentJson.length; i++){
-    if(studentJson[i].Number == studentNumber){
+
+    for( j=0; j< placementJson.length; j++)
+    {
+      if(document.getElementById("currPlace").value == placementJson[j].id && placementJson[j]["Number of Placements"] <=0)
+      {
+        available = false;
+        alert("Insufficient places");
+      }
+    }
+    if(document.getElementById("year").value < 0)
+    {
+      alert("Incorrect year input")
+      available = false;
+    }
+
+    if(studentJson[i].Number == studentNumber && available == true){
       studentJson[i].Name = document.getElementById("name").value;
       studentJson[i].Year = document.getElementById("year").value;
       studentJson[i].Location = document.getElementById("location").value;
@@ -269,6 +300,11 @@ function editStudent() {
       studentJson[i].County = document.getElementById("county").value;
       console.log("works");
     }
+
+    if(available == false)
+      {
+        return;
+      }
     else if(i==studentJson.length-1)
       console.log("Student doesn't exist");
   }
