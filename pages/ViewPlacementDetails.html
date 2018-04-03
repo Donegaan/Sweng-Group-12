@@ -136,6 +136,7 @@
                 var county = splitString[3];
                 var location = splitString[2];
                 var places = splitString[1];
+			
 
 
 
@@ -151,6 +152,7 @@
                 document.getElementById("place").innerHTML = places;
 
                 document.getElementById("name").innerHTML = name;
+				
 
             }
 
@@ -184,7 +186,7 @@
                 place = place.substring(1);
                 var newString = place.replace("place=<td>", "");
                 const splitString = newString.split("</td><td>");
-                var address = splitString[2];
+                var address = splitString[5];
                 console.log(address+"MAPS ADDRESS");
                 geocoder.geocode({
                     'address': address
@@ -193,7 +195,8 @@
                         resultsMap.setCenter(results[0].geometry.location);
                         var marker = new google.maps.Marker({
                             map: resultsMap,
-                            position: results[0].geometry.location
+                            position: results[0].geometry.location,
+							title: address
                         });
                     } else {
                         alert('Geocode was not successful for the following reason: ' + status);
