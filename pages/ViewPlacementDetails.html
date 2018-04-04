@@ -111,6 +111,7 @@
 
 }
   </script> -->
+
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGrIpLfAxR0NDgSODLhzH5f7I2bJgXdMs&callback=initMap">
         </script>
         <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGrIpLfAxR0NDgSODLhzH5f7I2bJgXdMs&callback=initialize"></script> -->
@@ -118,6 +119,7 @@
 
         <script>
             var data;
+
             function receiveWorkplace() {
                 var place = decodeURIComponent(window.location.search);
                 data = place;
@@ -129,6 +131,7 @@
 
                 const splitString = newString.split("</td><td>");
 
+
                 var whole = splitString;
 
                 var placeId = splitString[0];
@@ -136,7 +139,6 @@
                 var county = splitString[3];
                 var location = splitString[2];
                 var places = splitString[1];
-			
 
 
 
@@ -152,21 +154,19 @@
                 document.getElementById("place").innerHTML = places;
 
                 document.getElementById("name").innerHTML = name;
-				
 
             }
 
             function sendDetails() {
                 console.log(data);
-                var qs = "?place=" + data;
+                var qs = data;
                 window.location.href = "EditPlacementDetails.html" + qs;
 
             }
-
-
-            //------- Google maps stuff
+            
+            
+                       //------- Google maps stuff
             function initMap() {
-
                 var geocoder = new google.maps.Geocoder();
                 var latlng = new google.maps.LatLng(53.3498, -6.2603);
                 var mapOptions = {
@@ -179,7 +179,6 @@
                 var map = new google.maps.Map(document.getElementById('mapCanvas'), mapOptions);
                 codeAddress(geocoder, map);
             }
-
             function codeAddress(geocoder, resultsMap) {
                 // var address = "Maynooth";
                 var place = decodeURIComponent(window.location.search);

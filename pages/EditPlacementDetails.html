@@ -7,10 +7,9 @@
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
 </head>
 <body onload="receivePlacement()">
+    
 <div class="sidenav">
-    <a href="workplacelist.html">Back</a>
-
-
+    <a onClick = sendDetails() href="ViewPlacementDetails.html">Back</a>
 </div>
 
 <div class="main">
@@ -20,7 +19,7 @@
 <div class="container">
   <form action="saved.html" onsubmit="go()">
 <!--    <input type="text" id="id" name="id" value="90">-->
-    <lavbel for="name">Name</label>
+    <label for="name">Name</label>
     <input type="text" id= "name" name ="name" value = "">
     <label for="location">Location</label>
     <input type="text" id="location" name="location"value="">
@@ -47,12 +46,13 @@
 
 
     <script>
+    var data;
     function receivePlacement(){
     var placement = decodeURIComponent(window.location.search);
-
+    var data = placement;
     placement=placement.substring(1);
 
-    var newString = placement.replace("place=?place=<td>", "");
+    var newString = placement.replace("place=<td>", "");
 
     var splitString = newString.split("</td><td>");
 
@@ -63,6 +63,14 @@
     document.getElementById("name").value = splitString[4].replace("</td>","");
     }
 
+    function sendDetails()
+    {
+
+    var qs = data;
+    window.location.href="ViewPlacementDetails.html" + qs;
+    console.log("data sent to veiew");
+    }  
+        
     function check()
     {
 //    var btn = document.getElementById("save");
@@ -98,7 +106,6 @@
 
         alert("Changes Saved");
         window.location.href = "workplacelist.html";
-
 //    btn.onclick = function() {
 //    savePopup.style.display = "block";
 //}

@@ -9,10 +9,7 @@
 <body onload="receiveStudent()">
 
 <div class="sidenav">
-    <a href="studentlist.html">Back</a>
-
-
-
+    <a onClick = sendDetails() href= "ViewStudentDetails.html">Back</a>
 </div>
 
 <div class="main">
@@ -55,12 +52,13 @@
 </div>
   </form>
     <script>
+    var data;
     function receiveStudent(){
     var student = decodeURIComponent(window.location.search);
-    
+    data = student;
     student=student.substring(1);
         
-    var newString = student.replace("stud=?stud=<td>", "");
+    var newString = student.replace("stud=<td>", "");
 
     var splitString = newString.split("</td><td>");
     
@@ -74,15 +72,19 @@
     //document.getElementById("sample").innerHTML =  student;
     //document.getElementById("sample1").innerHTML =  splitString;  
     }
-        
+     function sendDetails()
+    {
+
+    var qs = data;
+    window.location.href="ViewStudentDetails.html" + qs;
+    console.log("data sent to veiew");
+    }   
             
     function check()
     {
     var btn = document.getElementById("save");
     var savePopup = document.getElementById("popup1");
     
-        
-   
     var studentName = document.getElementById("name").value;
     
     var studentYr = document.getElementById("year").value;
@@ -115,8 +117,9 @@
     {
         
         alert("Changes Saved");
-        window.location.href = "studentlist.html";
+//    btn.onclick = function() {
 //    savePopup.style.display = "block";
+        window.location.href = "studentlist.html";
 //}
         editStudent();
        
