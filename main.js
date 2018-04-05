@@ -234,14 +234,16 @@ function editStudent() {
   for (var i = 0; i < studentJson.length; i++) {
 
     for (j = 0; j < placementJson.length; j++) {
-      if (document.getElementById("currPlace").value == placementJson[j].id && placementJson[j]["Number of Placements"] <= 0) {
-        available = false;
-        alert("Insufficient places");
-      }
+     
+      //Checking if the placement has space left, currently not working we change name, year etc and keep allocated placement the same
+      // if (document.getElementById("currPlace").value == placementJson[j].id && placementJson[j]["Number of Placements"] <= 0) {
+      //   available = false;
+      //   alert("Insufficient places");
+      // }
 
-      if (document.getElementById("currPlace").value == placementJson[j].id) {
+      //Checking if the placement exists
+      if (document.getElementById("currPlace").value == placementJson[j].id)
         count++;
-      }
 
     }
 
@@ -249,12 +251,13 @@ function editStudent() {
       available = false;
       alert("This location does not exist");
     }
-
+    //Checking if year input is > 0
     if (document.getElementById("year").value < 0) {
       alert("Incorrect year input")
       available = false;
-    }
+    } 
 
+    //Editing student
     if (studentJson[i].Number == studentNumber && available == true) {
       studentJson[i].Name = document.getElementById("name").value;
       studentJson[i].Year = document.getElementById("year").value;
