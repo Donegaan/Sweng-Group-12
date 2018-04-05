@@ -16,17 +16,8 @@
   <div class="main">
     <h2>Edit Student Details </h2>
     <p>Student Number: <b id="id"></b></p>
-    <!--
-    <textarea id = "sample"></textarea>
-    <textarea id = "sample1"></textarea>
--->
-
     <div class="container">
       <form action="saved.html" onsubmit="go()">
-        <!--
-    <label for="id">Student Number</label>
-    <input type="text" id="id" name="id" value="">
--->
         <label for="name">Full Name</label>
         <input type="text" id="name" name="name" value="">
         <label for="year">Year</label>
@@ -37,22 +28,16 @@
         <input type="text" id="county" name="county" value="">
         <label for="places">Current Placement ID</label>
         <input type="text" id="currPlace" name="currPlace" value="">
-        <!--    <input type="submit" value="Save"> href="#popup1"-->
-
-        <a class="saveBtn" onclick="check()">
-        Save
-    </a>
-
-
+        <a class="saveBtn" onclick="check()">Save</a>
         <div id="popup1" class="overlay">
           <div class="popup">
             <h1>Changes saved</h1>
             <a class="close" href="#">&times;</a>
-
           </div>
         </div>
       </form>
       <script>
+          
         var data;
 
         //Receives student data embedded in the href
@@ -60,42 +45,32 @@
           var student = decodeURIComponent(window.location.search);
           data = student;
           student = student.substring(1);
-
           var newString = student.replace("stud=<td>", "");
-
           var splitString = newString.split("</td><td>");
-
           document.getElementById("id").innerHTML = splitString[0];
           document.getElementById("name").value = splitString[1];
           document.getElementById("year").value = splitString[2];
           document.getElementById("location").value = splitString[3];
           document.getElementById("county").value = splitString[4];
           document.getElementById("currPlace").value = splitString[5].replace("</td>", "");
-
-          //document.getElementById("sample").innerHTML =  student;
-          //document.getElementById("sample1").innerHTML =  splitString;
         }
 
         //Embeds the student details in the href
         function sendDetails() {
-
           var qs = data;
           window.location.href = "ViewStudentDetails.html" + qs;
           console.log("data sent to veiew");
         }
 
-        //Checks to see if the boxes have been left blank
+        //Checks to see if the boxes have been left blank before saving the data to the file
         function check() {
           var btn = document.getElementById("save");
           var savePopup = document.getElementById("popup1");
-
           var studentName = document.getElementById("name").value;
-
           var studentYr = document.getElementById("year").value;
           var studentLoc = document.getElementById("location").value;
           var studentCounty = document.getElementById("county").value;
           var curPlace = document.getElementById("currPlace").value;
-
 
           if (studentName == "") {
             alert("No name!");
@@ -110,12 +85,8 @@
           } else {
 
             alert("Changes Saved");
-            //    btn.onclick = function() {
-            //    savePopup.style.display = "block";
             window.location.href = "studentlist.html";
-            //}
             editStudent();
-
           }
         }
       </script>
@@ -123,7 +94,5 @@
       </script>
     </div>
   </div>
-
 </body>
-
 </html>
