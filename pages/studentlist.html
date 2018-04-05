@@ -90,9 +90,8 @@
         function SelectRow(row) {
           if (selectedRow !== undefined) {
 
-            console.log(selectedRow.innerHTML);
+
             var studId = selectedRow.cells[0].innerHTML;
-            console.log(studId);
             sendDetails(selectedRow.innerHTML);
           }
           selectedRow = row;
