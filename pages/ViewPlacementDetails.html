@@ -110,6 +110,7 @@
 
 }
   </script> -->
+
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGrIpLfAxR0NDgSODLhzH5f7I2bJgXdMs&callback=initMap">
         </script>
         <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGrIpLfAxR0NDgSODLhzH5f7I2bJgXdMs&callback=initialize"></script> -->
@@ -117,6 +118,7 @@
 
         <script>
             var data;
+
             function receiveWorkplace() {
                 var place = decodeURIComponent(window.location.search);
                 data = place;
@@ -127,6 +129,7 @@
 
 
                 const splitString = newString.split("</td><td>");
+
 
                 var whole = splitString;
 
@@ -155,15 +158,14 @@
 
             function sendDetails() {
                 console.log(data);
-                var qs = "?place=" + data;
+                var qs = data;
                 window.location.href = "EditPlacementDetails.html" + qs;
 
             }
-
-
-            //------- Google maps stuff
+            
+            
+                       //------- Google maps stuff
             function initMap() {
-
                 var geocoder = new google.maps.Geocoder();
                 var latlng = new google.maps.LatLng(53.3498, -6.2603);
                 var mapOptions = {
@@ -176,14 +178,13 @@
                 var map = new google.maps.Map(document.getElementById('mapCanvas'), mapOptions);
                 codeAddress(geocoder, map);
             }
-
             function codeAddress(geocoder, resultsMap) {
                 // var address = "Maynooth";
                 var place = decodeURIComponent(window.location.search);
                 place = place.substring(1);
                 var newString = place.replace("place=<td>", "");
                 const splitString = newString.split("</td><td>");
-                var address = splitString[2];
+                var address = splitString[5];
                 console.log(address+"MAPS ADDRESS");
                 geocoder.geocode({
                     'address': address
@@ -192,7 +193,8 @@
                         resultsMap.setCenter(results[0].geometry.location);
                         var marker = new google.maps.Marker({
                             map: resultsMap,
-                            position: results[0].geometry.location
+                            position: results[0].geometry.location,
+							title: address
                         });
                     } else {
                         alert('Geocode was not successful for the following reason: ' + status);

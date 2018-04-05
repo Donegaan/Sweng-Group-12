@@ -3,7 +3,6 @@
  -------------------------*/
 // Github repo: https://github.com/Donegaan/Sweng-Group-12
 // process.resourcesPath needed for package app
-
 const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
@@ -20,10 +19,12 @@ var jsonToCsv = require('convert-json-to-csv');
 
 
 // Read in files
-try{
+try {
   // var csvData = fs.readFileSync(path.join(process.resourcesPath,'app/Students.csv'), { encoding : 'utf8'}); // Read in csv file
-  var csvData = fs.readFileSync(path.join('./Students.csv'), { encoding : 'utf8'}); // Read in csv file
-}catch (err){
+  var csvData = fs.readFileSync(path.join('./Students.csv'), {
+    encoding: 'utf8'
+  }); // Read in csv file
+} catch (err) {
   if (err.code === 'ENOENT') {
     console.log('Student file not found!');
     console.log('Path of file in parent dir:', require('path').resolve(process.resourcesPath, 'app/Students.csv'));
@@ -32,20 +33,24 @@ try{
   }
 }
 
-try{
+try {
   // var csvPlacement = fs.readFileSync(path.join(process.resourcesPath,'app/Placements.csv'),{ encoding : 'utf8'});
-  var csvPlacement = fs.readFileSync(path.join('./Placements.csv'),{ encoding : 'utf8'});
-}catch (err){
+  var csvPlacement = fs.readFileSync(path.join('./Placements.csv'), {
+    encoding: 'utf8'
+  });
+} catch (err) {
   if (err.code === 'ENOENT') {
     console.log('Placement file not found!');
   } else {
     throw err;
   }
 }
-try{
+try {
   // var csvPrevPlace = fs.readFileSync(path.join(process.resourcesPath,'app/Previous Placements.csv'),{ encoding : 'utf8'});
-  var csvPrevPlace = fs.readFileSync(path.join('./Previous Placements.csv'),{ encoding : 'utf8'});
-}catch (err){
+  var csvPrevPlace = fs.readFileSync(path.join('./Previous Placements.csv'), {
+    encoding: 'utf8'
+  });
+} catch (err) {
   if (err.code === 'ENOENT') {
     console.log('Previous placement file not found!');
   } else {
@@ -54,7 +59,8 @@ try{
 }
 
 var Leinster = ["Dublin", "Meath", "Louth", "Kildare", "Kilkenny", "Offaly",
-"Westmeath", "Carlow", "Wexford", "Wicklow", "Laois", "Longford"];
+  "Westmeath", "Carlow", "Wexford", "Wicklow", "Laois", "Longford"
+];
 var Ulster = ["Donegal", "Cavan", "Monaghan", "Fermanagh", "Antrim", "Tyrone", "Derry", "Down", "Armagh"];
 var Munster = ["Cork", "Kerry", "Clare", "Limerick", "Tipperary", "Waterford"];
 var Connacht = ["Mayo", "Galway", "Sligo", "Leitrim", "Roscommon"];
@@ -66,9 +72,12 @@ var dublinNorth = ["D1", "D3", "D5", "D7", "D9", "D11", "D13", "D15", "D17"];
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600
+  })
 
   // and load the main html page of the app.
   mainWindow.loadURL(url.format({
@@ -77,11 +86,11 @@ function createWindow () {
     slashes: true
   }));
 
-//  Open the DevTools.
+  //  Open the DevTools.
   mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
+  mainWindow.on('closed', function() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
@@ -95,7 +104,7 @@ function createWindow () {
 app.on('ready', createWindow)
 
 // Quit when all windows are closed.
-app.on('window-all-closed', function () {
+app.on('window-all-closed', function() {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
@@ -103,7 +112,7 @@ app.on('window-all-closed', function () {
   }
 })
 
-app.on('activate', function () {
+app.on('activate', function() {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
@@ -114,12 +123,9 @@ app.on('activate', function () {
 
 //--------------------------------- Convert csv to JSON ------------------------------
 var csvOptions = {
-  delimiter : ',', // optional
-  quote : '"' // optional
+  delimiter: ',', // optional
+  quote: '"' // optional
 };
-
-//var jsonData = csvjson.toColumnArray(csvData, csvOptions);
-//console.log(jsonData);
 
 //-------------------------Write to JSON ---------------------------------------
 function getStudentData() {
@@ -137,128 +143,76 @@ function getPrevPlacementData() {
 addProvinces();
 //json to csv
 
-function writeToStudentCsv(studentJson){
-  var columnHeaderArray=["Number","Name","Year", "Location","County", "Allocated Placement"];
+function writeToStudentCsv(studentJson) {
+  var columnHeaderArray = ["Number", "Name", "Year", "Location", "County", "Allocated Placement"];
   csvData = jsonToCsv.convertArrayOfObjects(studentJson, columnHeaderArray);
   csvData = csvData.replace(/"/g, '');
-  var file='Students.csv';
+  var file = 'Students.csv';
   // var file = path.join(process.resourcesPath,'/app/Students.csv'); // Path for packaged app
-  fs.writeFileSync(file,csvData,'utf8', null);
+  fs.writeFileSync(file, csvData, 'utf8', null);
 }
-function writeToPlacementCsv(placementJson){
-  var columnHeaderArray=["id","Number of Placements","Location","County","Name"];
+
+function writeToPlacementCsv(placementJson) {
+  var columnHeaderArray = ["id", "Number of Placements", "Location", "County", "Name"];
   csvPlacement = jsonToCsv.convertArrayOfObjects(placementJson, columnHeaderArray);
   csvPlacement = csvPlacement.replace(/"/g, '');
-  var file ='Placements.csv';
+  var file = 'Placements.csv';
   // var file = path.join(process.resourcesPath,'/app/Placements.csv'); // Path for packaged app
-  fs.writeFileSync(file,csvPlacement, 'utf8', null);
-}
-//Adds a new placement to the list
-function addPlacement(placementJson, id, location, county, numPlacements){
-
-  for(var i=0; i<placementJson.length; i++){
-    if(placementJson[i].id ==id){
-      return placementJson;
-    }
-
-  }
-  var newPlacementInfo = {"id" : id,
-                          "Location" : location,
-                          "County" : county,
-                          "Number of Placements" : numPlacements};
-
-  placementJson.push(newPlacementInfo);
-  return placementJson;
+  fs.writeFileSync(file, csvPlacement, 'utf8', null);
 }
 //Searches for placement by id and edits according to new parameters
-function editPlacement(){
-  var placementJson=getPlacementData();
+function editPlacement() {
+  var placementJson = getPlacementData();
   var placementId = document.getElementById("id").innerHTML;
   var available = true;
 
 
-  for (var i=0; i<placementJson.length; i++){
+  for (var i = 0; i < placementJson.length; i++) {
 
-    if(document.getElementById("places").value < 0)
+    if (document.getElementById("places").value < 0)
       available = false;
 
-    if(placementJson[i].id ==placementId && available == true){
+    if (placementJson[i].id == placementId && available == true) {
       placementJson[i].Location = document.getElementById("location").value;
       placementJson[i].County = document.getElementById("county").value;
       placementJson[i].Name = document.getElementById("name").value;
-        if(placementJson[i].County === "Dublin")
-        {
-          if(dublinNorth.hasKnownValue)
-            placementJson[i].DublinPostCode = "Dublin North";
-          if(dublinSouth.hasKnownValue)
+      if (placementJson[i].County === "Dublin") {
+        if (dublinNorth.hasKnownValue)
+          placementJson[i].DublinPostCode = "Dublin North";
+        if (dublinSouth.hasKnownValue)
           placementJson[i].DublinPostCode = "Dublin South";
-        }
+      }
       placementJson[i]["Number of Placements"] = document.getElementById("places").value;
       console.log("works");
     }
 
-    if( available == false)
-  {
+    if (available == false) {
       alert("Incorrect input");
       return;
-  }
-
-    else if(i==placementJson.length-1)
+    } else if (i == placementJson.length - 1)
       console.log("Placement doesnt exist");
   }
   writeToPlacementCsv(placementJson);
 }
-//Removes a placement based on id
-function removePlacement(placementJson, id){
 
-  for (var i=0; i<placementJson.length;i++){
-    if(placementJson[i].id == id){
-      placementJson.splice(i,1);
-    }
-  }
-  return placementJson;
-}
-/*
-    Adds a new student to the JSON object
-*/
-function addStudent(jsonData, number, name, year, location, allocatedPlacement,county){
-
-  for(var i=0; i<jsonData.length; i++){
-    //Returns the input if the student already exists
-    if(jsonData[i].Number == number){
-      return jsonData;
-    }
-  }
-  var newStudentInfo = {"Number": number,
-                        "Name": name,
-                        "Year": year,
-                        "Location": location,
-                        "Allocated Placement": allocatedPlacement,
-                        "County": county};
-
-  jsonData.push(newStudentInfo);
-  return jsonData;
-}
-
-function addProvinces(){
+function addProvinces() {
   var studentJson = getStudentData();
-  for(i=0; i < studentJson.length; i++)
-  {
-    for(j=0; j < Leinster.length; j++){
-      if(studentJson[i].County == Leinster[j])
+  for (i = 0; i < studentJson.length; i++) {
+    for (j = 0; j < Leinster.length; j++) {
+      if (studentJson[i].County == Leinster[j])
         studentJson[i]["Province"] = "Leinster";
     }
-    for(j=0; j < Munster.length; j++){
-      if(studentJson[i].County == Munster[j])
+    for (j = 0; j < Munster.length; j++) {
+      if (studentJson[i].County == Munster[j])
         studentJson[i]["Province"] = "Munster";
     }
 
-    for(j=0; j < Connacht.length; j++){
-      if(studentJson[i].County == Connacht[j])
+    for (j = 0; j < Connacht.length; j++) {
+      if (studentJson[i].County == Connacht[j])
         studentJson[i]["Province"] = "Connacht";
     }
-    for(j=0; j < Ulster.length; j++){
-      if(studentJson[i].County == Ulster[j])
+    for (j = 0; j < Ulster.length; j++) {
+      if (studentJson[i].County == Ulster[j])
         studentJson[i]["Province"] = "Ulster";
     }
   }
@@ -273,40 +227,35 @@ function editStudent() {
   var studentNumber = document.getElementById("id").innerHTML;
   // console.log(studentNumber+" Works");
   var studentJson = getStudentData();
-  var placementJson=getPlacementData();
+  var placementJson = getPlacementData();
   var available = true;
-  var count =0;
+  var count = 0;
 
-  for (var i=0; i<studentJson.length; i++){
+  for (var i = 0; i < studentJson.length; i++) {
 
-    for( j=0; j< placementJson.length; j++)
-    {
-      if(document.getElementById("currPlace").value == placementJson[j].id && placementJson[j]["Number of Placements"] <=0)
-      {
+    for (j = 0; j < placementJson.length; j++) {
+      if (document.getElementById("currPlace").value == placementJson[j].id && placementJson[j]["Number of Placements"] <= 0) {
         available = false;
         alert("Insufficient places");
       }
 
-      if(document.getElementById("currPlace").value == placementJson[j].id)
-      {
+      if (document.getElementById("currPlace").value == placementJson[j].id) {
         count++;
       }
 
     }
 
-    if(count ==0)
-    {
+    if (count == 0) {
       available = false;
       alert("This location does not exist");
     }
-    
-    if(document.getElementById("year").value < 0)
-    {
+
+    if (document.getElementById("year").value < 0) {
       alert("Incorrect year input")
       available = false;
     }
 
-    if(studentJson[i].Number == studentNumber && available == true){
+    if (studentJson[i].Number == studentNumber && available == true) {
       studentJson[i].Name = document.getElementById("name").value;
       studentJson[i].Year = document.getElementById("year").value;
       studentJson[i].Location = document.getElementById("location").value;
@@ -315,47 +264,32 @@ function editStudent() {
       console.log("works");
     }
 
-    if(available == false)
-      {
-        return;
-      }
-    else if(i==studentJson.length-1)
+    if (available == false) {
+      return;
+    } else if (i == studentJson.length - 1)
       console.log("Student doesn't exist");
   }
   //Writing to the json and the csv
   writeToStudentCsv(studentJson);
 }
-/*
-  Removes a student from the list based on their student number.
-*/
-function removeStudent(jsonData, number){
 
-  for (var i=0; i<jsonData.length;i++){
-    if(jsonData[i].Number == number){
-      jsonData.splice(i,1);
-    }
-  }
-  return jsonData;
-}
-
-function addPreviousPlacements(){
-  for(i=0; i<previousPlaceJson.length;i++){
-    for(j=0; j<studentJson.length;j++){
-      if(previousPlaceJson[i]["Student Number"] == studentJson[j]["Number"])
-      {
-      //  console.log("Match found adding previous placements to object")
+function addPreviousPlacements() {
+  for (i = 0; i < previousPlaceJson.length; i++) {
+    for (j = 0; j < studentJson.length; j++) {
+      if (previousPlaceJson[i]["Student Number"] == studentJson[j]["Number"]) {
+        //  console.log("Match found adding previous placements to object")
         // First Placement
-        if(previousPlaceJson[i]["Placement 1 ID"] == "NA")
+        if (previousPlaceJson[i]["Placement 1 ID"] == "NA")
           studentJson[j]["Placement 1"] = "";
         else
           studentJson[j]["Placement 1"] = previousPlaceJson[i]["Placement 1 ID"];
         // Second Placement
-        if(previousPlaceJson[i]["Placement 2 ID"] == "NA")
+        if (previousPlaceJson[i]["Placement 2 ID"] == "NA")
           studentJson[j]["Placement 2"] = "";
         else
           studentJson[j]["Placement 2"] = previousPlaceJson[i]["Placement 2 ID"];
         // Third Placements
-        if(previousPlaceJson[i]["Placement 3 ID"] == "NA")
+        if (previousPlaceJson[i]["Placement 3 ID"] == "NA")
           studentJson[j]["Placement 3"] = "";
         else
           studentJson[j]["Placement 3"] = previousPlaceJson[i]["Placement 3 ID"];
@@ -363,7 +297,7 @@ function addPreviousPlacements(){
       }
     }
   }
-//  console.log(studentJson);
+  //  console.log(studentJson);
 }
 
 //assignStudent(studentJson, placementJson, previousPlaceJson, dublinNorth, dublinSouth);
@@ -372,6 +306,7 @@ function assignAll() {
   var placementJson = getPlacementData();
   var previousPlaceJson = getPrevPlacementData();
   assignStudent();
+
   function assignStudent() {
     // Assigning fourth years first which have a "Perfect match"
     for (i = 0; i < studentJson.length; i++) //Looping through students
@@ -392,7 +327,7 @@ function assignAll() {
         if (studentJson[i]["Allocated Placement"] == "" && studentJson[i].Year == 4 &&
           studentJson[i].Location == placementJson[j].Location && studentJson[i].County == placementJson[j].County &&
           placementJson[j]["Number of Placements"] > 0 && previousExperience == false)
-          studentAllocation(studentJson, placementJson,i,j);
+          studentAllocation(studentJson, placementJson, i, j);
       }
     }
     //Finding fourth years without perfect location, but finding North / South

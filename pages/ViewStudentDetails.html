@@ -82,6 +82,7 @@
     var id;
     var studentInfo;
     var prevPlacement;
+    
   function receiveStudent(){
     var student = decodeURIComponent(window.location.search);
     data = student;
@@ -202,7 +203,7 @@
     function sendDetails()
     {
 
-    var qs = "?stud=" + data;
+    var qs = data;
     window.location.href="EditStudentDetails.html" + qs;
 
   }
