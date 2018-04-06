@@ -30,7 +30,7 @@
 </head>
 
 <body>
-
+    <!-- sidebar nagitation HTML -->
     <div class="sidenav">
         <a href="studentlist.html">Student List</a>
         <a href="workplacelist.html" class="active">Workplace List</a>
@@ -54,6 +54,8 @@
 
                 <br />
                 <p>Double click on a placement to view or edit its details.</p>
+                <!-- Table search -->
+
                 <input class="input" type="text" id="myInput" onkeyup="searchTable()" placeholder="Search by Placement ID..." title="Type in an ID">
                 <div class="rowPlacements" id="parsed_csv_list">
                     <div class="row" id="parsed_csv_list">
@@ -67,6 +69,7 @@
 
 <!-- Display the data in html table -->
 <script>
+    //prduce html table from .csv file 
     $(document).ready(function () {
         $('#load_data').click(function () {
             $.ajax({
@@ -135,13 +138,14 @@
        }
    }
  };
-
+    //send placement details to view placement 
      function sendDetails(placement) {
        var qs = "?place=" + placement;
        console.log("View placements HAS BEEN CALLED");
        window.location.href="ViewPlacementDetails.html" + qs;
 
 }
+    //search table by ID 
     function searchTable() {
         var input, filter, table, tr, td, i;
         input = document.getElementById("myInput");
@@ -159,7 +163,7 @@
             }
         }
     }
-
+    //filter html table to only show placements that still have available places
     function filterPlacements() {
         //console.log("FILTER CALLED !!!!!!!!!!!!!!!!!!!!!");
         var input, filter, table, tr, td, i;
