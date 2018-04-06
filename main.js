@@ -78,7 +78,8 @@ function createWindow() {
     width: 800,
     height: 600
   })
-
+  // Open full screen
+  mainWindow.maximize();
   // and load the main html page of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'pages/studentlist.html'),
