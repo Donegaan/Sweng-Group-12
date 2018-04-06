@@ -19,4 +19,4 @@ Read and write to json package: https://www.npmjs.com/package/jsonfile
 Our program reads and writes from the Students, Placements and Previous Placements csv files. These files store the student, placement and previous placement data that our program uses for the allocation process. We use csv files as it allows for easy transfer from the current system of excel files to our system.
 
 # File paths
-There are commented out file paths on lines X,X,X,X and X. These file paths are used when packaging the files into a desktop application. The current file paths are used while developing the application.
+There are commented out file paths on lines 23,37,49,152 and 161. These file paths are used when packaging the files into a desktop application. The current file paths are used while developing the application.

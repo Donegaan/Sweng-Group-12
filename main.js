@@ -2,7 +2,7 @@
         Boilerplate from: https://github.com/electron/electron-quick-start
  -------------------------*/
 // Github repo: https://github.com/Donegaan/Sweng-Group-12
-// process.resourcesPath needed for package app
+
 const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
